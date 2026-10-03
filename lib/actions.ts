@@ -85,3 +85,30 @@ export async function submitMessage(formData: FormData) {
   })
   redirect('/?sent=1#contact')
 }
+
+// Đổi thứ tự (↑ ↓) cho bảng có cột sort_order
+export async function moveRecord(table: string, id: string, direction: 'up' | 'down') {
+  const res = RESOURCES[table]
+  if (!res || res.single) throw new Error('Bảng không hợp lệ')
+  const supabase = await requireUser()
+
+  const { data } = await supabase
+    .from(table)
+    .select('id, sort_order')
+    .order('sort_order')
+    .order('id')
+  const rows = (data ?? []) as { id: string; sort_order: number }[]
+
+  const i = rows.findIndex((r) => String(r.id) === id)
+  const j = direction === 'up' ? i - 1 : i + 1
+  if (i < 0 || j < 0 || j >= rows.length) return
+
+  ;[rows[i], rows[j]] = [rows[j], rows[i]]
+  // Đánh lại số 1, 2, 3... để không bị lỗi khi có các mục trùng số
+  await Promise.all(
+    rows.map((r, idx) => supabase.from(table).update({ sort_order: idx + 1 }).eq('id', r.id))
+  )
+
+  revalidatePath('/')
+  revalidatePath(`/admin/${table}`)
+}
