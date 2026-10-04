@@ -13,6 +13,9 @@ export type Faq = { id: string; question: string; answer: string }
 export type Hero = {
   title: string; subtitle: string | null; image_url: string | null
   cta_text: string | null; cta_link: string | null
+  marquee_text: string | null
+  logo_url: string | null
+  brand_name: string | null
 }
 export type Contact = {
   email: string | null; phone: string | null; address: string | null

@@ -38,3 +38,101 @@ body {
   *, .reveal { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
+@keyframes marquee-ltr {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-ltr 50s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ===== Light sweep trên logo ===== */
+.logo-shine {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  --shine-duration: 7s;   /* tốc độ: tăng = chậm hơn */
+  --shine-opacity: 1;     /* độ sáng: 1 = trắng tối đa */
+}
+.logo-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: linear-gradient(
+    112deg,
+    rgba(255, 255, 255, 0) 32%,
+    rgba(255, 255, 255, calc(var(--shine-opacity) * 0.35)) 41%,
+    rgba(255, 255, 255, calc(var(--shine-opacity) * 0.9)) 47%,
+    rgba(255, 255, 255, var(--shine-opacity)) 50%,
+    rgba(255, 255, 255, calc(var(--shine-opacity) * 0.9)) 53%,
+    rgba(255, 255, 255, calc(var(--shine-opacity) * 0.35)) 59%,
+    rgba(255, 255, 255, 0) 68%
+  );
+  background-repeat: no-repeat;
+  background-size: 300% 100%;
+  background-position: 88% 0;
+  -webkit-mask-image: var(--logo, none);
+  mask-image: var(--logo, none);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  animation: logo-sweep var(--shine-duration) ease-in-out infinite alternate;
+}
+@keyframes logo-sweep {
+  from { background-position: 88% 0; }   /* ngoài mép trái */
+  to   { background-position: 12% 0; }   /* ngoài mép phải */
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-shine::after { animation: none; opacity: 0; }
+}
+
+
+/* ===== Hover light sweep (thẻ tính năng, ảnh màn hình) ===== */
+.hover-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  --sweep-rgb: 255, 255, 255;   /* màu vệt sáng */
+  --sweep-peak: 0.85;           /* độ sáng lõi: 0.5 nhẹ ... 1 mạnh */
+  --sweep-duration: 0.9s;       /* tốc độ quét */
+}
+/* Thẻ nền trắng: dùng vệt sáng xanh nhạt để nhìn thấy được */
+.hover-shine--card {
+  --sweep-rgb: 96, 165, 250;
+  --sweep-peak: 0.4;
+}
+.hover-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 60%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    112deg,
+    rgba(var(--sweep-rgb), 0) 20%,
+    rgba(var(--sweep-rgb), calc(var(--sweep-peak) * 0.4)) 40%,
+    rgba(var(--sweep-rgb), var(--sweep-peak)) 50%,
+    rgba(var(--sweep-rgb), calc(var(--sweep-peak) * 0.4)) 60%,
+    rgba(var(--sweep-rgb), 0) 80%
+  );
+  transform: translateX(-130%);
+}
+.hover-shine:hover::after {
+  animation: hover-sweep var(--sweep-duration) ease-out forwards;
+}
+@keyframes hover-sweep {
+  from { transform: translateX(-130%); }
+  to   { transform: translateX(230%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hover-shine:hover::after { animation: none; }
+}
