@@ -29,7 +29,7 @@ export default function ImageField({
             const f = e.target.files?.[0]
             if (f) setPreview(URL.createObjectURL(f))
           }}
-          className="block w-full text-sm text-gray-600 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-blue-700 hover:file:bg-blue-100 file:cursor-pointer"
+          className="block w-full text-sm text-gray-600 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-brand-700 hover:file:bg-brand-100 file:cursor-pointer"
         />
         <p className="mt-2 text-xs text-gray-500 font-normal">
           {current ? 'Không chọn file mới thì giữ nguyên ảnh cũ. ' : ''}Tối đa 4MB.

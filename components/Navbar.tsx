@@ -44,14 +44,23 @@ export default function Navbar({
     return () => io.disconnect();
   }, []);
 
+  const solid = scrolled || open;
+  const shownActive = scrolled ? active : "";
+
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : "bg-transparent"
+        solid ? "bg-white/90 backdrop-blur-md shadow-sm" : "bg-transparent"
       }`}
     >
-      <nav className="max-w-6xl mx-auto h-16 px-4 flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-2 font-bold text-lg">
+      <nav className="max-w-7xl mx-auto h-16 px-4 flex items-center justify-between">
+        {/* LOGO + TÊN THƯƠNG HIỆU */}
+        <a
+          href="#top"
+          className={`flex items-center gap-2 font-bold text-lg transition-colors ${
+            solid ? "text-gray-900" : "text-white"
+          }`}
+        >
           {logoUrl ? (
             <span
               className="logo-shine"
@@ -65,7 +74,7 @@ export default function Navbar({
             </span>
           ) : (
             <span className="logo-shine rounded-lg">
-              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center text-sm">
+              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-600 to-accent-600 text-white flex items-center justify-center text-sm">
                 {brand.charAt(0)}
               </span>
             </span>
@@ -73,15 +82,18 @@ export default function Navbar({
           {brand}
         </a>
 
+        {/* MENU DESKTOP */}
         <ul className="hidden md:flex items-center gap-1">
           {LINKS.map((l) => (
             <li key={l.id}>
               <a
                 href={`#${l.id}`}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  active === l.id
-                    ? "text-blue-600 bg-blue-50"
-                    : "text-gray-600 hover:text-blue-600 hover:bg-gray-100"
+                  shownActive === l.id
+                    ? "text-brand-600 bg-brand-50"
+                    : scrolled
+                      ? "text-gray-600 hover:text-brand-600 hover:bg-gray-100"
+                      : "text-white/90 hover:text-white hover:bg-white/10"
                 }`}
               >
                 {l.label}
@@ -92,25 +104,28 @@ export default function Navbar({
 
         <a
           href="#contact"
-          className="hidden md:inline-block bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/30 transition-all"
+          className="hidden md:inline-block bg-brand-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/30 transition-all"
         >
           Liên hệ tư vấn
         </a>
 
+        {/* NÚT HAMBURGER (ĐIỆN THOẠI) */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden p-2 rounded-lg hover:bg-gray-100"
+          className={`md:hidden p-2 rounded-lg transition-colors ${
+            solid ? "hover:bg-gray-100" : "hover:bg-white/10"
+          }`}
           aria-label="Mở menu"
         >
           <div className="w-5 space-y-1.5">
             <span
-              className={`block h-0.5 bg-gray-800 transition-all ${open ? "translate-y-2 rotate-45" : ""}`}
+              className={`block h-0.5 transition-all ${solid ? "bg-gray-800" : "bg-white"} ${open ? "translate-y-2 rotate-45" : ""}`}
             />
             <span
-              className={`block h-0.5 bg-gray-800 transition-all ${open ? "opacity-0" : ""}`}
+              className={`block h-0.5 transition-all ${solid ? "bg-gray-800" : "bg-white"} ${open ? "opacity-0" : ""}`}
             />
             <span
-              className={`block h-0.5 bg-gray-800 transition-all ${open ? "-translate-y-2 -rotate-45" : ""}`}
+              className={`block h-0.5 transition-all ${solid ? "bg-gray-800" : "bg-white"} ${open ? "-translate-y-2 -rotate-45" : ""}`}
             />
           </div>
         </button>
@@ -118,7 +133,7 @@ export default function Navbar({
 
       {/* DẢI CHỮ CHẠY TỪ TRÁI SANG PHẢI */}
       {marquee && (
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm overflow-hidden">
+        <div className="bg-gradient-to-r from-brand-600 to-accent-600 text-white text-sm overflow-hidden">
           <div className="marquee-track py-1.5">
             {[0, 1].map((i) => (
               <div
@@ -138,6 +153,7 @@ export default function Navbar({
         </div>
       )}
 
+      {/* MENU ĐIỆN THOẠI */}
       <div
         className={`md:hidden overflow-hidden bg-white shadow-md transition-all duration-300 ${
           open ? "max-h-96" : "max-h-0"
@@ -148,7 +164,7 @@ export default function Navbar({
             key={l.id}
             href={`#${l.id}`}
             onClick={() => setOpen(false)}
-            className="block px-6 py-3 text-gray-700 border-b border-gray-100 hover:bg-blue-50"
+            className="block px-6 py-3 text-gray-700 border-b border-gray-100 hover:bg-brand-50"
           >
             {l.label}
           </a>

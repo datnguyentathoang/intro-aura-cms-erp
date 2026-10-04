@@ -18,8 +18,8 @@ export default async function AdminHome() {
   ])
 
   const stats = [
-    { label: 'Tính năng', value: features.count ?? 0, href: '/admin/features', color: 'from-blue-500 to-blue-600', icon: '⭐' },
-    { label: 'Luồng nghiệp vụ', value: workflows.count ?? 0, href: '/admin/workflows', color: 'from-indigo-500 to-indigo-600', icon: '🔀' },
+    { label: 'Tính năng', value: features.count ?? 0, href: '/admin/features', color: 'from-brand-500 to-brand-600', icon: '⭐' },
+    { label: 'Luồng nghiệp vụ', value: workflows.count ?? 0, href: '/admin/workflows', color: 'from-accent-500 to-accent-600', icon: '🔀' },
     { label: 'Ảnh chụp màn hình', value: shots.count ?? 0, href: '/admin/screenshots', color: 'from-emerald-500 to-emerald-600', icon: '📸' },
     { label: 'Câu hỏi FAQ', value: faqs.count ?? 0, href: '/admin/faqs', color: 'from-amber-500 to-orange-500', icon: '❓' },
     { label: 'Tin nhắn chưa xử lý', value: unread.count ?? 0, href: '/admin/messages', color: 'from-rose-500 to-red-600', icon: '✉️' },
@@ -63,7 +63,7 @@ export default async function AdminHome() {
             <Link
               key={q.href}
               href={q.href}
-              className="flex items-center justify-between bg-white border border-gray-100 rounded-xl px-5 py-4 text-sm font-medium text-gray-700 hover:border-blue-300 hover:text-blue-600 hover:shadow-md transition-all"
+              className="flex items-center justify-between bg-white border border-gray-100 rounded-xl px-5 py-4 text-sm font-medium text-gray-700 hover:border-brand-300 hover:text-brand-600 hover:shadow-md transition-all"
             >
               {q.label}
               <span>→</span>

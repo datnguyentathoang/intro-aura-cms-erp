@@ -12,7 +12,7 @@ type Props = {
 }
 
 const input =
-  'mt-1.5 w-full border border-gray-200 rounded-lg px-3 py-2.5 font-normal bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition'
+  'mt-1.5 w-full border border-gray-200 rounded-lg px-3 py-2.5 font-normal bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition'
 
 export default function RecordForm({ resource, record, relations, action, submitLabel }: Props) {
   return (
@@ -29,7 +29,7 @@ export default function RecordForm({ resource, record, relations, action, submit
                 defaultChecked={record ? Boolean(value) : true}
                 className="peer sr-only"
               />
-              <span className="relative w-11 h-6 rounded-full bg-gray-300 peer-checked:bg-blue-600 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5" />
+              <span className="relative w-11 h-6 rounded-full bg-gray-300 peer-checked:bg-brand-600 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5" />
               <span className="text-sm font-medium text-gray-700">{f.label}</span>
             </label>
           )

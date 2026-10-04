@@ -2,6 +2,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { submitMessage } from "@/lib/actions";
 import Navbar from "@/components/Navbar";
+import HeroVideo from "@/components/HeroVideo";
 import Reveal from "@/components/Reveal";
 import type {
   Contact,
@@ -13,13 +14,13 @@ import type {
 } from "@/lib/types";
 
 const inputCls =
-  "w-full border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition";
+  "w-full border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-brand-500 transition";
 
 function SectionTitle({ title, sub }: { title: string; sub?: string }) {
   return (
     <Reveal className="text-center mb-12">
       <h2 className="text-3xl md:text-4xl font-bold text-gray-900">{title}</h2>
-      <div className="mx-auto mt-4 h-1 w-16 rounded bg-gradient-to-r from-blue-600 to-indigo-600" />
+      <div className="mx-auto mt-4 h-1 w-16 rounded bg-gradient-to-r from-brand-600 to-accent-600" />
       {sub && <p className="mt-4 text-gray-600 max-w-2xl mx-auto">{sub}</p>}
     </Reveal>
   );
@@ -74,50 +75,75 @@ export default async function Home({
       />
       <main id="top">
         {/* HERO */}
-        <section className="relative overflow-hidden pt-44 pb-24 px-4 bg-gradient-to-b from-blue-50 via-white to-white">
-          <div className="absolute -top-20 -left-20 w-96 h-96 bg-blue-300/30 rounded-full blur-3xl animate-blob" />
-          <div className="absolute top-40 -right-20 w-96 h-96 bg-indigo-300/30 rounded-full blur-3xl animate-blob [animation-delay:3s]" />
-          <div className="relative max-w-4xl mx-auto text-center">
-            <span className="animate-fade-up inline-block mb-5 px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">
-              Giải pháp quản lý kho & bán hàng
-            </span>
-            <h1 className="animate-fade-up [animation-delay:150ms] text-4xl md:text-6xl font-extrabold leading-tight text-gray-900">
-              {h?.title}
-            </h1>
-            <p className="animate-fade-up [animation-delay:300ms] mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-              {h?.subtitle}
-            </p>
-            {h?.cta_text && (
-              <div className="animate-fade-up [animation-delay:450ms] mt-10 flex justify-center gap-4">
-                <a
-                  href={h.cta_link || "#contact"}
-                  className="bg-blue-600 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-600/30 transition-all"
+        <section className="relative overflow-hidden min-h-[90svh] flex items-center pt-36 pb-16 md:pt-40 md:pb-20 px-4 bg-stone-900">
+          <HeroVideo src="/hero-bg.mp4" poster="/hero-poster.jpg" />
+          {/* Lớp phủ tối để chữ dễ đọc */}
+          <div className="absolute inset-0 bg-black/45" />
+          {/* Chuyển mềm xuống nền trắng của mục bên dưới */}
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
+
+          <div
+            className={`relative w-full max-w-7xl mx-auto grid gap-12 items-center ${
+              h?.image_url ? "lg:grid-cols-2" : ""
+            }`}
+          >
+            {/* CỘT CHỮ */}
+            <div
+              className={`text-center ${
+                h?.image_url ? "lg:text-left" : "max-w-3xl mx-auto"
+              }`}
+            >
+              <span className="animate-fade-up inline-block mb-5 px-4 py-1.5 rounded-full bg-white/15 text-white backdrop-blur text-sm font-medium">
+                Giải pháp quản lý kho & bán hàng
+              </span>
+              <h1 className="animate-fade-up [animation-delay:150ms] text-balance text-4xl md:text-5xl xl:text-6xl font-extrabold leading-tight text-white">
+                {h?.title}
+              </h1>
+              <p
+                className={`animate-fade-up [animation-delay:300ms] mt-6 text-lg md:text-xl text-white/90 max-w-xl ${
+                  h?.image_url ? "mx-auto lg:mx-0" : "mx-auto"
+                }`}
+              >
+                {h?.subtitle}
+              </p>
+              {h?.cta_text && (
+                <div
+                  className={`animate-fade-up [animation-delay:450ms] mt-10 flex flex-wrap justify-center gap-4 ${
+                    h?.image_url ? "lg:justify-start" : ""
+                  }`}
                 >
-                  {h.cta_text}
-                </a>
-                <a
-                  href="#features"
-                  className="px-8 py-3.5 rounded-xl font-medium border border-gray-300 hover:bg-gray-50 transition"
-                >
-                  Xem tính năng
-                </a>
+                  <a
+                    href={h.cta_link || "#contact"}
+                    className="bg-brand-600 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-brand-700 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand-600/30 transition-all"
+                  >
+                    {h.cta_text}
+                  </a>
+                  <a
+                    href="#features"
+                    className="px-8 py-3.5 rounded-xl font-medium border border-white/60 text-white hover:bg-white/10 transition"
+                  >
+                    Xem tính năng
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* CỘT ẢNH */}
+            {h?.image_url && (
+              <div className="animate-fade-up [animation-delay:400ms]">
+                <img
+                  src={h.image_url}
+                  alt=""
+                  className="animate-float w-full rounded-2xl border border-white/20 shadow-2xl shadow-black/40"
+                />
               </div>
             )}
           </div>
-          {h?.image_url && (
-            <div className="animate-fade-up [animation-delay:600ms] relative max-w-5xl mx-auto mt-16">
-              <img
-                src={h.image_url}
-                alt=""
-                className="animate-float w-full rounded-2xl border border-gray-200 shadow-2xl shadow-blue-900/20"
-              />
-            </div>
-          )}
         </section>
 
         {/* TÍNH NĂNG */}
         {featureList.length > 0 && (
-          <section id="features" className="max-w-6xl mx-auto py-24 px-4">
+          <section id="features" className="max-w-7xl mx-auto py-24 px-4">
             <SectionTitle
               title="Tính năng nổi bật"
               sub="Mọi thứ bạn cần để quản lý kho, sản xuất và công nợ trong một hệ thống."
@@ -125,7 +151,7 @@ export default async function Home({
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {featureList.map((f, i) => (
                 <Reveal key={f.id} delay={(i % 3) * 120}>
-                  <div className="hover-shine hover-shine--card group h-full bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-blue-200 transition-all duration-300">
+                  <div className="hover-shine hover-shine--card group h-full bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-brand-200 transition-all duration-300">
                     {f.image_url ? (
                       <img
                         src={f.image_url}
@@ -133,7 +159,7 @@ export default async function Home({
                         className="mb-4 rounded-xl w-full h-40 object-cover"
                       />
                     ) : (
-                      <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+                      <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500 to-accent-600 text-white flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
                         {i + 1}
                       </div>
                     )}
@@ -173,12 +199,12 @@ export default async function Home({
                           className="mt-5 rounded-xl border"
                         />
                       )}
-                      <ol className="mt-8 ml-4 border-l-2 border-blue-100 space-y-6">
+                      <ol className="mt-8 ml-4 border-l-2 border-brand-100 space-y-6">
                         {[...(w.workflow_steps ?? [])]
                           .sort((a, b) => a.step_order - b.step_order)
                           .map((s) => (
                             <li key={s.id} className="relative pl-8">
-                              <span className="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-white text-sm font-semibold flex items-center justify-center ring-4 ring-white">
+                              <span className="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-gradient-to-br from-brand-600 to-accent-600 text-white text-sm font-semibold flex items-center justify-center ring-4 ring-white">
                                 {s.step_order}
                               </span>
                               <p className="font-semibold text-gray-900">
@@ -200,7 +226,7 @@ export default async function Home({
 
         {/* ẢNH CHỤP MÀN HÌNH */}
         {shotList.length > 0 && (
-          <section id="screenshots" className="max-w-6xl mx-auto py-24 px-4">
+          <section id="screenshots" className="max-w-7xl mx-auto py-24 px-4">
             <SectionTitle
               title="Giao diện hệ thống"
               sub="Hình ảnh thực tế từ phần mềm."
@@ -238,7 +264,7 @@ export default async function Home({
                   <details className="group bg-white border border-gray-100 rounded-xl p-5 mb-3 shadow-sm hover:shadow-md transition-shadow">
                     <summary className="flex justify-between items-center font-medium cursor-pointer list-none">
                       {q.question}
-                      <span className="ml-4 text-blue-600 text-xl transition-transform group-open:rotate-45">
+                      <span className="ml-4 text-brand-600 text-xl transition-transform group-open:rotate-45">
                         +
                       </span>
                     </summary>
@@ -284,7 +310,7 @@ export default async function Home({
                 <p>
                   <a
                     href={c.facebook}
-                    className="text-blue-600 hover:underline"
+                    className="text-brand-600 hover:underline"
                   >
                     Facebook
                   </a>
@@ -321,7 +347,7 @@ export default async function Home({
                   required
                   className={inputCls}
                 />
-                <button className="w-full bg-blue-600 text-white rounded-lg py-3 font-medium hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/30 transition-all">
+                <button className="w-full bg-brand-600 text-white rounded-lg py-3 font-medium hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/30 transition-all">
                   Gửi tin nhắn
                 </button>
               </form>
@@ -329,7 +355,7 @@ export default async function Home({
           </div>
         </section>
 
-        <footer className="bg-gray-900 text-gray-400 text-sm text-center py-8">
+        <footer className="bg-stone-900 text-stone-400 text-sm text-center py-8">
           © {new Date().getFullYear()} {h?.brand_name || "Aura ERP"}. Giải pháp
           quản lý kho & bán hàng.
         </footer>

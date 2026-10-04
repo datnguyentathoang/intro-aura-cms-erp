@@ -29,7 +29,7 @@ export default async function EditStepPage({
     <div className="space-y-6">
       <Link
         href={`/admin/workflows/${id}/steps`}
-        className="text-sm font-medium text-blue-600 hover:underline"
+        className="text-sm font-medium text-brand-600 hover:underline"
       >
         ← Quay lại danh sách bước
       </Link>

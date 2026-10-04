@@ -26,7 +26,7 @@ export default async function EditPage({
     <div className="space-y-6">
       <Link
         href={`/admin/${resource}`}
-        className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:underline"
+        className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:underline"
       >
         ← Quay lại danh sách
       </Link>

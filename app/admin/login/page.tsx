@@ -13,7 +13,7 @@ async function login(formData: FormData) {
 }
 
 const input =
-  'w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition'
+  'w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500 transition'
 
 export default async function LoginPage({
   searchParams,
@@ -22,16 +22,16 @@ export default async function LoginPage({
 }) {
   const { error } = await searchParams
   return (
-    <main className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 px-4 overflow-hidden">
-      <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-blob" />
-      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl animate-blob [animation-delay:3s]" />
+    <main className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-brand-950 to-accent-950 px-4 overflow-hidden">
+      <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl animate-blob" />
+      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl animate-blob [animation-delay:3s]" />
 
       <form
         action={login}
         className="animate-fade-up relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 space-y-5"
       >
         <div className="text-center">
-          <div className="mx-auto w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center text-2xl font-bold shadow-lg shadow-blue-600/30">
+          <div className="mx-auto w-14 h-14 rounded-xl bg-gradient-to-br from-brand-600 to-accent-600 text-white flex items-center justify-center text-2xl font-bold shadow-lg shadow-brand-600/30">
             A
           </div>
           <h1 className="mt-4 text-2xl font-bold text-gray-900">Đăng nhập quản trị</h1>
@@ -45,7 +45,7 @@ export default async function LoginPage({
         <input name="email" type="email" placeholder="Email" required className={input} />
         <input name="password" type="password" placeholder="Mật khẩu" required className={input} />
 
-        <button className="w-full bg-blue-600 text-white rounded-lg py-3 font-medium hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/30 transition-all">
+        <button className="w-full bg-brand-600 text-white rounded-lg py-3 font-medium hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/30 transition-all">
           Đăng nhập
         </button>
       </form>

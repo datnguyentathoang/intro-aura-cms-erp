@@ -10,7 +10,7 @@ import DeleteButton from "@/components/admin/DeleteButton";
 import type { Row } from "@/lib/types";
 
 const arrowBtn =
-  "w-8 h-8 rounded-lg bg-slate-100 text-slate-700 text-sm hover:bg-blue-100 hover:text-blue-700 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-slate-100 disabled:hover:text-slate-700 transition-colors";
+  "w-8 h-8 rounded-lg bg-slate-100 text-slate-700 text-sm hover:bg-brand-100 hover:text-brand-700 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-slate-100 disabled:hover:text-slate-700 transition-colors";
 
 export default async function ResourcePage({
   params,
@@ -67,7 +67,7 @@ export default async function ResourcePage({
       </div>
 
       <details className="group bg-white border border-gray-100 shadow-sm rounded-2xl">
-        <summary className="flex items-center justify-between cursor-pointer list-none px-6 py-4 font-semibold text-blue-600">
+        <summary className="flex items-center justify-between cursor-pointer list-none px-6 py-4 font-semibold text-brand-600">
           <span>＋ Thêm mới</span>
           <span className="text-gray-400 text-sm font-normal group-open:hidden">
             Bấm để mở form
@@ -161,14 +161,14 @@ export default async function ResourcePage({
               {resource === "workflows" && (
                 <Link
                   href={`/admin/workflows/${id}/steps`}
-                  className="px-3 py-1.5 rounded-lg text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-colors"
+                  className="px-3 py-1.5 rounded-lg text-sm font-medium text-accent-600 bg-accent-50 hover:bg-accent-100 transition-colors"
                 >
                   Quản lý bước
                 </Link>
               )}
               <Link
                 href={`/admin/${resource}/${id}`}
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-600 bg-brand-50 hover:bg-brand-100 transition-colors"
               >
                 Sửa
               </Link>

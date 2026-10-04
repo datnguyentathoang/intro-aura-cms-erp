@@ -33,13 +33,13 @@ export default async function MessagesPage() {
         <div
           key={m.id}
           className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${
-            m.is_handled ? 'border-green-400 opacity-80' : 'border-blue-500'
+            m.is_handled ? 'border-green-400 opacity-80' : 'border-brand-500'
           }`}
         >
           <div className="flex flex-wrap justify-between gap-2">
             <div>
               <p className="font-semibold text-gray-900">{m.name}</p>
-              <a href={`mailto:${m.email}`} className="text-sm text-blue-600 hover:underline">
+              <a href={`mailto:${m.email}`} className="text-sm text-brand-600 hover:underline">
                 {m.email}
               </a>
             </div>
@@ -54,7 +54,7 @@ export default async function MessagesPage() {
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   m.is_handled
                     ? 'bg-green-50 text-green-700 hover:bg-green-100'
-                    : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+                    : 'bg-brand-50 text-brand-700 hover:bg-brand-100'
                 }`}
               >
                 {m.is_handled ? '✓ Đã xử lý (bấm để bỏ)' : 'Đánh dấu đã xử lý'}
