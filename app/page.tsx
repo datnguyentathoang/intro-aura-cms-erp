@@ -159,11 +159,13 @@ export default async function Home({
                       </h3>
                       <p className="text-gray-600 mt-2">{w.description}</p>
                       {w.image_url && (
-                        <img
-                          src={w.image_url}
-                          alt=""
-                          className="mt-5 rounded-xl border"
-                        />
+                        <div className="mt-5 overflow-hidden rounded-xl border border-gray-200 bg-slate-50">
+                          <img
+                            src={w.image_url}
+                            alt={w.title}
+                            className="mx-auto block w-full max-h-[520px] object-contain"
+                          />
+                        </div>
                       )}
                       <ol className="mt-8 ml-4 border-l-2 border-brand-100 space-y-6">
                         {[...(w.workflow_steps ?? [])]
@@ -295,7 +297,8 @@ export default async function Home({
                 )}
                 {error && (
                   <p className="text-red-600 font-medium">
-                    Gửi không thành công, vui lòng kiểm tra thông tin và thử lại.
+                    Gửi không thành công, vui lòng kiểm tra thông tin và thử
+                    lại.
                   </p>
                 )}
                 <input

@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 import { setSession, type LoginResult } from "@/lib/session";
+import { getBrand } from "@/lib/api";
+import BrandLogo from "@/components/admin/BrandLogo";
 
 async function login(formData: FormData) {
   "use server";
@@ -43,6 +45,7 @@ export default async function LoginPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const { error } = await searchParams;
+  const { logoUrl, brandName } = await getBrand();
   return (
     <main className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-stone-900 via-brand-950 to-accent-950 px-4 overflow-hidden">
       <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl animate-blob" />
@@ -53,11 +56,15 @@ export default async function LoginPage({
         className="animate-fade-up relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 space-y-5"
       >
         <div className="text-center">
-          <div className="mx-auto w-14 h-14 rounded-xl bg-gradient-to-br from-brand-600 to-accent-600 text-white flex items-center justify-center text-2xl font-bold shadow-lg shadow-brand-600/30">
-            A
+          <div className="flex justify-center">
+            <BrandLogo logoUrl={logoUrl} brand={brandName} size="lg" />
           </div>
-          <h1 className="mt-4 text-2xl font-bold text-gray-900">Đăng nhập quản trị</h1>
-          <p className="text-sm text-gray-500 mt-1">Quản lý nội dung website giới thiệu</p>
+          <h1 className="mt-4 text-2xl font-bold text-gray-900">
+            Đăng nhập quản trị
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Quản lý nội dung website giới thiệu
+          </p>
         </div>
 
         {error && (
@@ -66,8 +73,20 @@ export default async function LoginPage({
           </p>
         )}
 
-        <input name="email" type="email" placeholder="Email" required className={input} />
-        <input name="password" type="password" placeholder="Mật khẩu" required className={input} />
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          required
+          className={input}
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Mật khẩu"
+          required
+          className={input}
+        />
 
         <button className="w-full bg-brand-600 text-white rounded-lg py-3 font-medium hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/30 transition-all">
           Đăng nhập

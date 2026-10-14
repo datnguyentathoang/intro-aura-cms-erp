@@ -1,31 +1,43 @@
-'use client'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+"use client";
+import BrandLogo from "@/components/admin/BrandLogo";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
-export type NavItem = { href: string; label: string; icon: string }
+export type NavItem = { href: string; label: string; icon: string };
 
 export default function Sidebar({
   items,
   email,
   logout,
+  logoUrl,
+  brand,
 }: {
-  items: NavItem[]
-  email: string
-  logout: () => void | Promise<void>
+  items: NavItem[];
+  email: string;
+  logout: () => void | Promise<void>;
+  logoUrl?: string | null;
+  brand?: string | null;
 }) {
-  const pathname = usePathname()
-  const [open, setOpen] = useState(false)
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
   const isActive = (href: string) =>
-    href === '/admin' ? pathname === '/admin' : pathname.startsWith(href)
+    href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
 
   return (
     <>
       {/* Thanh trên cho mobile */}
       <div className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-slate-900 text-white flex items-center justify-between px-4">
-        <span className="font-bold">Aura CMS</span>
-        <button onClick={() => setOpen(true)} className="p-2 rounded-lg hover:bg-slate-800" aria-label="Mở menu">
+        <span className="flex items-center gap-2 font-bold">
+          <BrandLogo logoUrl={logoUrl} brand={brand} onDark />
+          {brand || "Aura CMS"}
+        </span>
+        <button
+          onClick={() => setOpen(true)}
+          className="p-2 rounded-lg hover:bg-slate-800"
+          aria-label="Mở menu"
+        >
           <div className="w-5 space-y-1.5">
             <span className="block h-0.5 bg-white" />
             <span className="block h-0.5 bg-white" />
@@ -35,20 +47,23 @@ export default function Sidebar({
       </div>
 
       {open && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setOpen(false)} />
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-black/50"
+          onClick={() => setOpen(false)}
+        />
       )}
 
       <aside
         className={`fixed top-0 left-0 z-50 h-full w-64 bg-slate-900 text-slate-300 flex flex-col transition-transform duration-300 ${
-          open ? 'translate-x-0' : '-translate-x-full'
+          open ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >
         <div className="h-16 px-5 flex items-center gap-3 border-b border-slate-800">
-          <span className="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-500 to-accent-600 text-white flex items-center justify-center font-bold">
-            A
-          </span>
-          <div className="leading-tight">
-            <p className="font-bold text-white">Aura CMS</p>
+          <BrandLogo logoUrl={logoUrl} brand={brand} onDark />
+          <div className="leading-tight min-w-0">
+            <p className="font-bold text-white truncate">
+              {brand || "Aura CMS"}
+            </p>
             <p className="text-xs text-slate-500">Quản trị nội dung</p>
           </div>
         </div>
@@ -61,8 +76,8 @@ export default function Sidebar({
               onClick={() => setOpen(false)}
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 isActive(it.href)
-                  ? 'bg-brand-600 text-white shadow-lg shadow-brand-600/20'
-                  : 'hover:bg-slate-800 hover:text-white'
+                  ? "bg-brand-600 text-white shadow-lg shadow-brand-600/20"
+                  : "hover:bg-slate-800 hover:text-white"
               }`}
             >
               <span className="text-base w-5 text-center">{it.icon}</span>
@@ -80,7 +95,9 @@ export default function Sidebar({
         </nav>
 
         <div className="p-4 border-t border-slate-800">
-          <p className="text-xs text-slate-500 truncate" title={email}>{email}</p>
+          <p className="text-xs text-slate-500 truncate" title={email}>
+            {email}
+          </p>
           <form action={logout}>
             <button className="mt-2 w-full rounded-lg bg-slate-800 hover:bg-red-600 hover:text-white text-sm py-2 transition-colors">
               Đăng xuất
@@ -89,5 +106,5 @@ export default function Sidebar({
         </div>
       </aside>
     </>
-  )
+  );
 }

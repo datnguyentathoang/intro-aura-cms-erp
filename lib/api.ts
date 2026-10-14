@@ -91,3 +91,18 @@ export async function adminJson<T>(path: string): Promise<T | null> {
   await ensureOk(res);
   return (await res.json()) as T;
 }
+
+// Lấy logo và tên thương hiệu cho trang admin. Lỗi hoặc API đang ngủ thì trả null.
+export async function getBrand(): Promise<{ logoUrl: string | null; brandName: string | null }> {
+  try {
+    const res = await fetch(apiUrl("/api/public/home"), {
+      cache: "no-store",
+      signal: AbortSignal.timeout(4000),
+    });
+    if (!res.ok) return { logoUrl: null, brandName: null };
+    const d = (await res.json()) as HomeData;
+    return { logoUrl: d.hero?.logo_url ?? null, brandName: d.hero?.brand_name ?? null };
+  } catch {
+    return { logoUrl: null, brandName: null };
+  }
+}

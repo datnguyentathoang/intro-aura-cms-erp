@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { RESOURCES } from "@/lib/resources";
 import { getEmail, signOut } from "@/lib/session";
+import { getBrand } from "@/lib/api";
 import Sidebar, { type NavItem } from "@/components/admin/Sidebar";
 
 const ICONS: Record<string, string> = {
@@ -20,6 +21,7 @@ async function logout() {
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
   const email = await getEmail();
+  const { logoUrl, brandName } = await getBrand();
 
   const items: NavItem[] = [
     { href: "/admin", label: "Tổng quan", icon: "📊" },
@@ -35,7 +37,13 @@ export default async function PanelLayout({ children }: { children: React.ReactN
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <Sidebar items={items} email={email} logout={logout} />
+      <Sidebar
+        items={items}
+        email={email}
+        logout={logout}
+        logoUrl={logoUrl}
+        brand={brandName}
+      />
       <main className="lg:pl-64 pt-14 lg:pt-0">
         <div className="p-6 lg:p-10">{children}</div>
       </main>
