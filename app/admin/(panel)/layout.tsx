@@ -1,13 +1,12 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
 import { RESOURCES } from "@/lib/resources";
+import { getEmail, signOut } from "@/lib/session";
 import Sidebar, { type NavItem } from "@/components/admin/Sidebar";
 
 const ICONS: Record<string, string> = {
   hero: "🖼️",
   features: "⭐",
   workflows: "🔀",
-  workflow_steps: "🪜",
   screenshots: "📸",
   faqs: "❓",
   contact_info: "📞",
@@ -15,20 +14,12 @@ const ICONS: Record<string, string> = {
 
 async function logout() {
   "use server";
-  const supabase = await createClient();
-  await supabase.auth.signOut();
+  await signOut();
   redirect("/admin/login");
 }
 
-export default async function PanelLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+export default async function PanelLayout({ children }: { children: React.ReactNode }) {
+  const email = await getEmail();
 
   const items: NavItem[] = [
     { href: "/admin", label: "Tổng quan", icon: "📊" },
@@ -44,7 +35,7 @@ export default async function PanelLayout({
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <Sidebar items={items} email={user?.email ?? ""} logout={logout} />
+      <Sidebar items={items} email={email} logout={logout} />
       <main className="lg:pl-64 pt-14 lg:pt-0">
         <div className="p-6 lg:p-10">{children}</div>
       </main>

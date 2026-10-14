@@ -1,17 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { createClient } from "@/lib/supabase/server";
+import { getHome } from "@/lib/api";
 import { submitMessage } from "@/lib/actions";
 import Navbar from "@/components/Navbar";
 import HeroVideo from "@/components/HeroVideo";
 import Reveal from "@/components/Reveal";
-import type {
-  Contact,
-  Faq,
-  Feature,
-  Hero,
-  Screenshot,
-  Workflow,
-} from "@/lib/types";
 
 const inputCls =
   "w-full border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-brand-500 transition";
@@ -29,42 +21,16 @@ function SectionTitle({ title, sub }: { title: string; sub?: string }) {
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ sent?: string }>;
+  searchParams: Promise<{ sent?: string; error?: string }>;
 }) {
-  const { sent } = await searchParams;
-  const supabase = await createClient();
-
-  const [hero, features, workflows, shots, faqs, contact] = await Promise.all([
-    supabase.from("hero").select("*").eq("id", 1).maybeSingle(),
-    supabase
-      .from("features")
-      .select("*")
-      .eq("is_published", true)
-      .order("sort_order"),
-    supabase
-      .from("workflows")
-      .select("*, workflow_steps(*)")
-      .eq("is_published", true)
-      .order("sort_order"),
-    supabase
-      .from("screenshots")
-      .select("*")
-      .eq("is_published", true)
-      .order("sort_order"),
-    supabase
-      .from("faqs")
-      .select("*")
-      .eq("is_published", true)
-      .order("sort_order"),
-    supabase.from("contact_info").select("*").eq("id", 1).maybeSingle(),
-  ]);
-
-  const h = hero.data as Hero | null;
-  const c = contact.data as Contact | null;
-  const featureList = (features.data ?? []) as Feature[];
-  const workflowList = (workflows.data ?? []) as Workflow[];
-  const shotList = (shots.data ?? []) as Screenshot[];
-  const faqList = (faqs.data ?? []) as Faq[];
+  const { sent, error } = await searchParams;
+  const home = await getHome();
+  const h = home.hero;
+  const c = home.contact;
+  const featureList = home.features;
+  const workflowList = home.workflows;
+  const shotList = home.screenshots;
+  const faqList = home.faqs;
 
   return (
     <>
@@ -325,6 +291,11 @@ export default async function Home({
                 {sent && (
                   <p className="text-green-600 font-medium">
                     Đã gửi, chúng tôi sẽ liên hệ lại sớm!
+                  </p>
+                )}
+                {error && (
+                  <p className="text-red-600 font-medium">
+                    Gửi không thành công, vui lòng kiểm tra thông tin và thử lại.
                   </p>
                 )}
                 <input

@@ -1,39 +1,31 @@
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
-import { RESOURCES } from '@/lib/resources'
-import RecordForm from '@/components/RecordForm'
-import DeleteButton from '@/components/admin/DeleteButton'
-import { addStep, deleteStep, moveStep } from './actions'
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { adminJson } from "@/lib/api";
+import { RESOURCES } from "@/lib/resources";
+import RecordForm from "@/components/RecordForm";
+import DeleteButton from "@/components/admin/DeleteButton";
+import { addStep, deleteStep, moveStep } from "./actions";
 
-type Step = { id: string; step_order: number; title: string; description: string | null }
+type Step = { id: string; step_order: number; title: string; description: string | null };
 
 const arrowBtn =
-  'w-8 h-8 rounded-lg bg-slate-100 text-slate-700 text-sm hover:bg-brand-100 hover:text-brand-700 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-slate-100 disabled:hover:text-slate-700 transition-colors'
+  "w-8 h-8 rounded-lg bg-slate-100 text-slate-700 text-sm hover:bg-brand-100 hover:text-brand-700 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-slate-100 disabled:hover:text-slate-700 transition-colors";
 
 export default async function WorkflowStepsPage({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params
-  const supabase = await createClient()
+  const { id } = await params;
 
-  const { data: wf } = await supabase.from('workflows').select('id, title').eq('id', id).maybeSingle()
-  if (!wf) notFound()
+  const [wf, stepsData] = await Promise.all([
+    adminJson<{ id: string; title: string }>(`/api/admin/workflows/${id}`),
+    adminJson<Step[]>(`/api/admin/workflows/${id}/steps`),
+  ]);
+  if (!wf) notFound();
 
-  const { data } = await supabase
-    .from('workflow_steps')
-    .select('*')
-    .eq('workflow_id', id)
-    .order('step_order')
-    .order('id')
-  const steps = (data ?? []) as Step[]
-  const nextOrder = steps.length ? Math.max(...steps.map((s) => s.step_order)) + 1 : 1
-
-  // Form thêm bước: ẩn ô "Thuộc luồng" vì đã biết luồng
-  const base = RESOURCES.workflow_steps
-  const res = { ...base, fields: base.fields.filter((f) => f.name !== 'workflow_id') }
+  const steps = stepsData ?? [];
+  const nextOrder = steps.length ? Math.max(...steps.map((s) => s.step_order)) + 1 : 1;
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -47,13 +39,16 @@ export default async function WorkflowStepsPage({
         <p className="text-sm text-gray-500">{steps.length} bước</p>
       </div>
 
-      <details className="group bg-white border border-gray-100 shadow-sm rounded-2xl" open={steps.length === 0}>
+      <details
+        className="group bg-white border border-gray-100 shadow-sm rounded-2xl"
+        open={steps.length === 0}
+      >
         <summary className="cursor-pointer list-none px-6 py-4 font-semibold text-brand-600">
           ＋ Thêm bước mới (bước số {nextOrder})
         </summary>
         <div className="px-6 pb-6">
           <RecordForm
-            resource={res}
+            resource={RESOURCES.workflow_steps}
             record={{ step_order: nextOrder }}
             relations={{}}
             action={addStep.bind(null, id)}
@@ -68,14 +63,13 @@ export default async function WorkflowStepsPage({
             key={s.id}
             className="bg-white border border-gray-100 rounded-2xl p-4 flex items-center gap-3 shadow-sm"
           >
-            {/* Nút đổi thứ tự */}
             <div className="flex flex-col gap-1">
-              <form action={moveStep.bind(null, id, s.id, 'up')}>
+              <form action={moveStep.bind(null, id, s.id, "up")}>
                 <button className={arrowBtn} disabled={i === 0} title="Chuyển lên">
                   ↑
                 </button>
               </form>
-              <form action={moveStep.bind(null, id, s.id, 'down')}>
+              <form action={moveStep.bind(null, id, s.id, "down")}>
                 <button className={arrowBtn} disabled={i === steps.length - 1} title="Chuyển xuống">
                   ↓
                 </button>
@@ -108,5 +102,5 @@ export default async function WorkflowStepsPage({
         )}
       </ol>
     </div>
-  )
+  );
 }

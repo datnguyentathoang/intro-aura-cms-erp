@@ -1,24 +1,19 @@
-import { createClient } from '@/lib/supabase/server'
-import { deleteMessage, toggleHandled } from '@/lib/actions'
-import DeleteButton from '@/components/admin/DeleteButton'
+import { adminJson } from "@/lib/api";
+import { deleteMessage, toggleHandled } from "@/lib/actions";
+import DeleteButton from "@/components/admin/DeleteButton";
 
 type Msg = {
-  id: string
-  name: string
-  email: string
-  message: string
-  is_handled: boolean
-  created_at: string
-}
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  is_handled: boolean;
+  created_at: string;
+};
 
 export default async function MessagesPage() {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('contact_messages')
-    .select('*')
-    .order('created_at', { ascending: false })
-  const messages = (data ?? []) as Msg[]
-  const pending = messages.filter((m) => !m.is_handled).length
+  const messages = (await adminJson<Msg[]>("/api/admin/messages")) ?? [];
+  const pending = messages.filter((m) => !m.is_handled).length;
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -33,7 +28,7 @@ export default async function MessagesPage() {
         <div
           key={m.id}
           className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${
-            m.is_handled ? 'border-green-400 opacity-80' : 'border-brand-500'
+            m.is_handled ? "border-green-400 opacity-80" : "border-brand-500"
           }`}
         >
           <div className="flex flex-wrap justify-between gap-2">
@@ -44,7 +39,7 @@ export default async function MessagesPage() {
               </a>
             </div>
             <span className="text-xs text-gray-500">
-              {new Date(m.created_at).toLocaleString('vi-VN')}
+              {new Date(m.created_at).toLocaleString("vi-VN")}
             </span>
           </div>
           <p className="mt-3 text-gray-700 whitespace-pre-wrap">{m.message}</p>
@@ -53,11 +48,11 @@ export default async function MessagesPage() {
               <button
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   m.is_handled
-                    ? 'bg-green-50 text-green-700 hover:bg-green-100'
-                    : 'bg-brand-50 text-brand-700 hover:bg-brand-100'
+                    ? "bg-green-50 text-green-700 hover:bg-green-100"
+                    : "bg-brand-50 text-brand-700 hover:bg-brand-100"
                 }`}
               >
-                {m.is_handled ? '✓ Đã xử lý (bấm để bỏ)' : 'Đánh dấu đã xử lý'}
+                {m.is_handled ? "✓ Đã xử lý (bấm để bỏ)" : "Đánh dấu đã xử lý"}
               </button>
             </form>
             <DeleteButton action={deleteMessage.bind(null, m.id)} message="Xóa tin nhắn này?" />
@@ -71,5 +66,5 @@ export default async function MessagesPage() {
         </div>
       )}
     </div>
-  )
+  );
 }
