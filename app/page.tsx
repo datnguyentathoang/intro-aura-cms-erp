@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { getHome } from "@/lib/api";
+import { getHome, getMenu  } from "@/lib/api";
 import { submitMessage } from "@/lib/actions";
 import Navbar from "@/components/Navbar";
 import HeroVideo from "@/components/HeroVideo";
@@ -24,7 +24,7 @@ export default async function Home({
   searchParams: Promise<{ sent?: string; error?: string }>;
 }) {
   const { sent, error } = await searchParams;
-  const home = await getHome();
+  const [home, menu] = await Promise.all([getHome(), getMenu()]);
   const h = home.hero;
   const c = home.contact;
   const featureList = home.features;

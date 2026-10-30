@@ -21,3 +21,11 @@ export type Contact = {
   email: string | null; phone: string | null; address: string | null
   facebook: string | null; zalo: string | null
 }
+export type MenuNode = { id: string; label: string; href: string | null; children: MenuNode[] };
+export type PublicSection = { id: string; type: string; content: Record<string, unknown> };
+export type PublicPage = {
+  slug: string; title: string;
+  seo_title: string | null; seo_description: string | null; og_image_url: string | null;
+  published_at: string | null; updated_at: string;
+  sections: PublicSection[];
+};

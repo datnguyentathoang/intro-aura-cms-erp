@@ -1,7 +1,8 @@
+import { cache } from "react"
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ACCESS_COOKIE } from "@/lib/auth-cookies";
-import type { Contact, Faq, Feature, Hero, Screenshot, Workflow } from "@/lib/types";
+import type { Contact, Faq, Feature, Hero, Screenshot, Workflow, MenuNode, PublicPage } from "@/lib/types";
 
 function apiUrl(path: string) {
   const base = process.env.API_BASE_URL;
@@ -106,3 +107,43 @@ export async function getBrand(): Promise<{ logoUrl: string | null; brandName: s
     return { logoUrl: null, brandName: null };
   }
 }
+
+// ---------- Trang động và menu (công khai) ----------
+function publicFetch(path: string, timeoutMs: number) {
+  return fetch(apiUrl(path), { cache: "no-store", signal: AbortSignal.timeout(timeoutMs) });
+}
+
+// 404 -> null (trang không tồn tại). Lỗi khác -> ném lỗi, tránh biến sự cố tạm thời thành 404
+export const getPage = cache(async (slug: string): Promise<PublicPage | null> => {
+  const res = await publicFetch(`/api/public/pages/${encodeURIComponent(slug)}`, 15000);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`API trả về lỗi ${res.status}`);
+  return (await res.json()) as PublicPage;
+});
+
+// Menu và sitemap chịu lỗi: có sự cố thì trả mảng rỗng, website vẫn hiển thị
+export const getMenu = cache(async (): Promise<MenuNode[]> => {
+  try {
+    const res = await publicFetch("/api/public/menu", 4000);
+    return res.ok ? ((await res.json()) as MenuNode[]) : [];
+  } catch {
+    return [];
+  }
+});
+
+export async function getPublishedPages(): Promise<{ slug: string; updated_at: string }[]> {
+  try {
+    const res = await publicFetch("/api/public/pages", 8000);
+    return res.ok ? await res.json() : [];
+  } catch {
+    return [];
+  }
+}
+
+export const getHomeSafe = cache(async (): Promise<HomeData | null> => {
+  try {
+    return await getHome();
+  } catch {
+    return null;
+  }
+});
