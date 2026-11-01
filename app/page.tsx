@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { getHome, getMenu  } from "@/lib/api";
+import { getHomeSafe, getMenu } from "@/lib/api";
 import { submitMessage } from "@/lib/actions";
 import Navbar from "@/components/Navbar";
 import HeroVideo from "@/components/HeroVideo";
@@ -24,13 +24,21 @@ export default async function Home({
   searchParams: Promise<{ sent?: string; error?: string }>;
 }) {
   const { sent, error } = await searchParams;
-  const [home, menu] = await Promise.all([getHome(), getMenu()]);
-  const h = home.hero;
-  const c = home.contact;
-  const featureList = home.features;
-  const workflowList = home.workflows;
-  const shotList = home.screenshots;
-  const faqList = home.faqs;
+  const [home, menu] = await Promise.all([getHomeSafe(), getMenu()]);
+  const safeHome = home ?? {
+    hero: null,
+    features: [],
+    workflows: [],
+    screenshots: [],
+    faqs: [],
+    contact: null,
+  };
+  const h = safeHome.hero;
+  const c = safeHome.contact;
+  const featureList = safeHome.features;
+  const workflowList = safeHome.workflows;
+  const shotList = safeHome.screenshots;
+  const faqList = safeHome.faqs;
 
   return (
     <>
@@ -38,6 +46,7 @@ export default async function Home({
         brand={h?.brand_name ?? undefined}
         logoUrl={h?.logo_url ?? undefined}
         marquee={h?.marquee_text ?? undefined}
+        menu={menu}
       />
       <main id="top">
         {/* HERO */}

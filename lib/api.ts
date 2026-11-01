@@ -19,15 +19,31 @@ export type HomeData = {
   contact: Contact | null;
 };
 
+const EMPTY_HOME: HomeData = {
+  hero: null,
+  features: [],
+  workflows: [],
+  screenshots: [],
+  faqs: [],
+  contact: null,
+};
+
 export async function getHome(): Promise<HomeData> {
-  let res: Response;
   try {
-    res = await fetch(apiUrl("/api/public/home"), { cache: "no-store" });
+    const res = await fetch(apiUrl("/api/public/home"), { cache: "no-store" });
+    if (!res.ok) return EMPTY_HOME;
+    const data = (await res.json()) as Partial<HomeData>;
+    return {
+      hero: data.hero ?? null,
+      features: Array.isArray(data.features) ? data.features : [],
+      workflows: Array.isArray(data.workflows) ? data.workflows : [],
+      screenshots: Array.isArray(data.screenshots) ? data.screenshots : [],
+      faqs: Array.isArray(data.faqs) ? data.faqs : [],
+      contact: data.contact ?? null,
+    };
   } catch {
-    throw new Error("Không kết nối được máy chủ API");
+    return EMPTY_HOME;
   }
-  if (!res.ok) throw new Error(`API trả về lỗi ${res.status}`);
-  return res.json();
 }
 
 export async function publicPost(path: string, json: unknown) {
