@@ -4,7 +4,7 @@ import { adminJson } from "@/lib/api";
 import type { AdminMenuItem, PageListItem } from "@/lib/admin-types";
 import MenuForm from "@/components/admin/MenuForm";
 import { updateMenuItem } from "../actions";
-import { parentOptions } from "../new/page";
+import { parentOptions } from "@/lib/menu-options";
 
 export default async function EditMenuItem({
   params, searchParams,
