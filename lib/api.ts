@@ -2,7 +2,7 @@ import { cache } from "react"
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ACCESS_COOKIE } from "@/lib/auth-cookies";
-import type { Contact, Faq, Feature, Hero, Screenshot, Workflow, MenuNode, PublicPage } from "@/lib/types";
+import type { BlogPostList, Contact, Faq, Feature, Hero, Screenshot, Workflow, MenuNode, PublicPage } from "@/lib/types";
 
 function apiUrl(path: string) {
   const base = process.env.API_BASE_URL;
@@ -163,3 +163,20 @@ export const getHomeSafe = cache(async (): Promise<HomeData | null> => {
     return null;
   }
 });
+
+// ---------- Blog (công khai) ----------
+// 10 bài mỗi trang: 1 thẻ lớn + 9 thẻ nhỏ lấp đủ lưới 3 cột
+const BLOG_PAGE_SIZE = 10;
+
+// Lỗi API -> ném lỗi, tránh hiển thị nhầm thành "chưa có bài viết"
+export async function getBlogPosts(page = 1): Promise<BlogPostList> {
+  const res = await publicFetch(`/api/public/blog/posts?page=${page}&page_size=${BLOG_PAGE_SIZE}`, 15000);
+  if (!res.ok) throw new Error(`API trả về lỗi ${res.status}`);
+  const d = (await res.json()) as Partial<BlogPostList>;
+  return {
+    items: Array.isArray(d.items) ? d.items : [],
+    total: typeof d.total === "number" ? d.total : 0,
+    page: typeof d.page === "number" ? d.page : page,
+    page_size: typeof d.page_size === "number" && d.page_size > 0 ? d.page_size : BLOG_PAGE_SIZE,
+  };
+}

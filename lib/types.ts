@@ -48,3 +48,10 @@ export type AdminMenuItem = {
   page_id: string | null; page_title: string | null; page_slug: string | null;
   url: string | null; sort_order: number; is_published: boolean;
 };
+export type PostCategoryRef = { name: string; slug: string };
+export type BlogPostCard = {
+  title: string; slug: string; excerpt: string | null; thumbnail_url: string | null;
+  author_name: string | null; published_at: string | null; read_minutes: number;
+  categories: PostCategoryRef[];
+};
+export type BlogPostList = { items: BlogPostCard[]; total: number; page: number; page_size: number };
