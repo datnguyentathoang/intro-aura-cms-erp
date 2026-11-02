@@ -29,7 +29,7 @@ export default async function WorkflowStepsPage({
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <Link href="/admin/workflows" className="text-sm font-medium text-brand-600 hover:underline">
+      <Link href="/admin/workflows" className="text-sm font-medium text-brand-700 hover:underline">
         ← Quay lại Luồng nghiệp vụ
       </Link>
 
@@ -43,7 +43,7 @@ export default async function WorkflowStepsPage({
         className="group bg-white border border-gray-100 shadow-sm rounded-2xl"
         open={steps.length === 0}
       >
-        <summary className="cursor-pointer list-none px-6 py-4 font-semibold text-brand-600">
+        <summary className="cursor-pointer list-none px-6 py-4 font-semibold text-brand-700">
           ＋ Thêm bước mới (bước số {nextOrder})
         </summary>
         <div className="px-6 pb-6">
@@ -76,7 +76,7 @@ export default async function WorkflowStepsPage({
               </form>
             </div>
 
-            <span className="shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-brand-600 to-accent-600 text-white font-semibold flex items-center justify-center">
+            <span className="shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-brand-700 to-accent-700 text-white font-semibold flex items-center justify-center">
               {s.step_order}
             </span>
 
@@ -87,7 +87,7 @@ export default async function WorkflowStepsPage({
 
             <Link
               href={`/admin/workflows/${id}/steps/${s.id}`}
-              className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-600 bg-brand-50 hover:bg-brand-100"
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-700 bg-brand-50 hover:bg-brand-100"
             >
               Sửa
             </Link>

@@ -34,7 +34,7 @@ export default async function MessagesPage() {
           <div className="flex flex-wrap justify-between gap-2">
             <div>
               <p className="font-semibold text-gray-900">{m.name}</p>
-              <a href={`mailto:${m.email}`} className="text-sm text-brand-600 hover:underline">
+              <a href={`mailto:${m.email}`} className="text-sm text-brand-700 hover:underline">
                 {m.email}
               </a>
             </div>

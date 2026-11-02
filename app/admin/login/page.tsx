@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { setSession, type LoginResult } from "@/lib/session";
 import { getBrand } from "@/lib/api";
 import BrandLogo from "@/components/admin/BrandLogo";
+import SubmitButton from "@/components/admin/SubmitButton";
 
 async function login(formData: FormData) {
   "use server";
@@ -37,7 +38,7 @@ const MESSAGES: Record<string, string> = {
 };
 
 const input =
-  "w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500 transition";
+  "mt-1 w-full border border-gray-300 rounded-lg px-4 py-3 font-normal text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition";
 
 export default async function LoginPage({
   searchParams,
@@ -73,24 +74,28 @@ export default async function LoginPage({
           </p>
         )}
 
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          required
-          className={input}
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Mật khẩu"
-          required
-          className={input}
-        />
+        <label className="block text-sm font-medium text-gray-700">
+          Email
+          <input
+            name="email"
+            type="email"
+            autoComplete="username"
+            required
+            className={input}
+          />
+        </label>
+        <label className="block text-sm font-medium text-gray-700">
+          Mật khẩu
+          <input
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            required
+            className={input}
+          />
+        </label>
 
-        <button className="w-full bg-brand-600 text-white rounded-lg py-3 font-medium hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/30 transition-all">
-          Đăng nhập
-        </button>
+        <SubmitButton label="Đăng nhập" pendingLabel="Đang đăng nhập..." block />
       </form>
     </main>
   );

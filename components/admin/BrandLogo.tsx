@@ -33,7 +33,7 @@ export default function BrandLogo({
     <span
       className={`${
         size === "lg" ? "w-14 h-14 text-2xl rounded-xl" : "w-9 h-9 rounded-lg"
-      } shrink-0 bg-gradient-to-br from-brand-500 to-accent-600 text-white flex items-center justify-center font-bold`}
+      } shrink-0 bg-gradient-to-br from-brand-700 to-accent-700 text-white flex items-center justify-center font-bold`}
     >
       {name.charAt(0).toUpperCase()}
     </span>

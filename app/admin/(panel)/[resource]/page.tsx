@@ -55,7 +55,7 @@ export default async function ResourcePage({
       </div>
 
       <details className="group bg-white border border-gray-100 shadow-sm rounded-2xl">
-        <summary className="flex items-center justify-between cursor-pointer list-none px-6 py-4 font-semibold text-brand-600">
+        <summary className="flex items-center justify-between cursor-pointer list-none px-6 py-4 font-semibold text-brand-700">
           <span>＋ Thêm mới</span>
           <span className="text-gray-400 text-sm font-normal group-open:hidden">
             Bấm để mở form
@@ -135,14 +135,14 @@ export default async function ResourcePage({
               {resource === "workflows" && (
                 <Link
                   href={`/admin/workflows/${id}/steps`}
-                  className="px-3 py-1.5 rounded-lg text-sm font-medium text-accent-600 bg-accent-50 hover:bg-accent-100 transition-colors"
+                  className="px-3 py-1.5 rounded-lg text-sm font-medium text-accent-700 bg-accent-50 hover:bg-accent-100 transition-colors"
                 >
                   Quản lý bước
                 </Link>
               )}
               <Link
                 href={`/admin/${resource}/${id}`}
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-600 bg-brand-50 hover:bg-brand-100 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-700 bg-brand-50 hover:bg-brand-100 transition-colors"
               >
                 Sửa
               </Link>

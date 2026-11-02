@@ -29,7 +29,7 @@ export default async function MenuAdmin({ searchParams }: { searchParams: Promis
           <h1 className="text-3xl font-bold text-gray-900">Menu website</h1>
           <p className="text-gray-500 mt-1">{items.length} mục, tối đa 3 cấp. Chưa có mục nào thì website dùng menu mặc định.</p>
         </div>
-        <Link href="/admin/menu/new" className="rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-700 transition-colors">
+        <Link href="/admin/menu/new" className="rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-800 transition-colors">
           ＋ Thêm mục menu
         </Link>
       </div>
@@ -50,7 +50,7 @@ export default async function MenuAdmin({ searchParams }: { searchParams: Promis
                 {!m.is_published && <span className="ml-2 rounded-full bg-orange-100 px-2 py-0.5 text-orange-700">Đang ẩn</span>}
               </p>
             </div>
-            <Link href={`/admin/menu/${m.id}`} className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-600 bg-brand-50 hover:bg-brand-100 transition-colors">Sửa</Link>
+            <Link href={`/admin/menu/${m.id}`} className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-700 bg-brand-50 hover:bg-brand-100 transition-colors">Sửa</Link>
             <DeleteButton action={deleteMenuItem.bind(null, m.id)} message="Xóa mục này? Các mục con của nó cũng bị xóa." />
           </li>
         ))}

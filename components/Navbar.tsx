@@ -1,6 +1,6 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { MenuNode } from "@/lib/types";
@@ -46,6 +46,19 @@ export default function Navbar({ brand = "Aura ERP", logoUrl, marquee, menu = []
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  // Esc đóng menu di động và trả focus về nút menu
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -80,9 +93,9 @@ export default function Navbar({ brand = "Aura ERP", logoUrl, marquee, menu = []
   const topCls = (a: boolean) =>
     `inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
       a
-        ? "text-brand-600 bg-brand-50"
+        ? "text-brand-700 bg-brand-50"
         : solid
-          ? "text-gray-600 hover:text-brand-600 hover:bg-gray-100"
+          ? "text-gray-600 hover:text-brand-700 hover:bg-gray-100"
           : "text-white/90 hover:text-white hover:bg-white/10"
     }`;
 
@@ -94,7 +107,7 @@ export default function Navbar({ brand = "Aura ERP", logoUrl, marquee, menu = []
       depth === 0
         ? topCls(now)
         : `flex items-center justify-between gap-3 px-4 py-2 text-sm whitespace-nowrap transition-colors ${
-            now ? "text-brand-600 bg-brand-50" : "text-gray-700 hover:bg-brand-50 hover:text-brand-600"
+            now ? "text-brand-700 bg-brand-50" : "text-gray-700 hover:bg-brand-50 hover:text-brand-700"
           }`;
     const label = (
       <>
@@ -154,7 +167,7 @@ export default function Navbar({ brand = "Aura ERP", logoUrl, marquee, menu = []
             </span>
           ) : (
             <span className="logo-shine rounded-lg">
-              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-600 to-accent-600 text-white flex items-center justify-center text-sm">
+              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-700 to-accent-700 text-white flex items-center justify-center text-sm">
                 {brand.charAt(0)}
               </span>
             </span>
@@ -166,16 +179,18 @@ export default function Navbar({ brand = "Aura ERP", logoUrl, marquee, menu = []
 
         <Anchor
           href={onHome ? "#contact" : "/#contact"}
-          className="hidden md:inline-block bg-brand-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/30 transition-all"
+          className="hidden md:inline-block bg-brand-700 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-brand-800 hover:shadow-lg hover:shadow-brand-600/30 transition-all"
         >
           Liên hệ tư vấn
         </Anchor>
 
         <button
+          ref={toggleRef}
           onClick={() => setOpen(!open)}
-          className={`md:hidden p-2 rounded-lg transition-colors ${solid ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
-          aria-label="Mở menu"
+          className={`md:hidden flex w-11 h-11 items-center justify-center rounded-lg transition-colors ${solid ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
+          aria-label={open ? "Đóng menu" : "Mở menu"}
           aria-expanded={open}
+          aria-controls="mobile-menu"
         >
           <div className="w-5 space-y-1.5">
             <span className={`block h-0.5 transition-all ${solid ? "bg-gray-800" : "bg-white"} ${open ? "translate-y-2 rotate-45" : ""}`} />
@@ -186,7 +201,7 @@ export default function Navbar({ brand = "Aura ERP", logoUrl, marquee, menu = []
       </nav>
 
       {marquee && (
-        <div className="bg-gradient-to-r from-brand-600 to-accent-600 text-white text-sm overflow-hidden">
+        <div className="bg-gradient-to-r from-brand-700 to-accent-700 text-white text-sm overflow-hidden">
           <div className="marquee-track py-1.5">
             {[0, 1].map((i) => (
               <div key={i} className="flex shrink-0 min-w-[100vw] justify-around" aria-hidden={i === 1}>
@@ -202,7 +217,10 @@ export default function Navbar({ brand = "Aura ERP", logoUrl, marquee, menu = []
         </div>
       )}
 
+      {/* inert: khi đóng, link bên trong không nhận focus bằng phím Tab */}
       <div
+        id="mobile-menu"
+        inert={!open}
         className={`md:hidden overflow-y-auto bg-white shadow-md transition-all duration-300 ${
           open ? "max-h-[80vh]" : "max-h-0"
         }`}

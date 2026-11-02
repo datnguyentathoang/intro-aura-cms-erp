@@ -54,7 +54,7 @@ function Hero({ c, first }: { c: C; first: boolean }) {
           )}
           {s(c.cta_text) && (
             <div className="mt-10">
-              <A href={safeHref(c.cta_link)} className={`${btn} bg-brand-600 text-white hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30`}>
+              <A href={safeHref(c.cta_link)} className={`${btn} bg-brand-700 text-white hover:bg-brand-800 hover:shadow-xl hover:shadow-brand-600/30`}>
                 {s(c.cta_text)}
               </A>
             </div>
@@ -89,7 +89,7 @@ function FeatureGrid({ c, tone }: { c: C; tone: Tone }) {
                 {img ? (
                   <img src={img} alt="" className="mb-4 rounded-xl w-full h-40 object-cover" />
                 ) : (
-                  <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500 to-accent-600 text-white flex items-center justify-center font-bold">
+                  <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-700 to-accent-700 text-white flex items-center justify-center font-bold">
                     {s(it.icon, 4) || i + 1}
                   </div>
                 )}
@@ -120,7 +120,7 @@ function ImageText({ c, tone }: { c: C; tone: Tone }) {
           {s(c.text) && <p className="mt-5 text-gray-600 leading-relaxed whitespace-pre-line">{s(c.text, 4000)}</p>}
           {s(c.cta_text) && (
             <div className="mt-8">
-              <A href={safeHref(c.cta_link)} className={`${btn} bg-brand-600 text-white hover:bg-brand-700`}>{s(c.cta_text)}</A>
+              <A href={safeHref(c.cta_link)} className={`${btn} bg-brand-700 text-white hover:bg-brand-800`}>{s(c.cta_text)}</A>
             </div>
           )}
         </Reveal>
@@ -181,13 +181,13 @@ function Pricing({ c, tone }: { c: C; tone: Tone }) {
                 {s(p.description) && <p className="mt-3 text-sm text-gray-600">{s(p.description)}</p>}
                 <ul className="mt-6 space-y-2 text-sm text-gray-700 flex-1">
                   {strs(p.features).map((f, k) => (
-                    <li key={k} className="flex gap-2"><span className="text-brand-600" aria-hidden>✓</span>{f.slice(0, 200)}</li>
+                    <li key={k} className="flex gap-2"><span className="text-brand-700" aria-hidden>✓</span>{f.slice(0, 200)}</li>
                   ))}
                 </ul>
                 {s(p.cta_text) && (
                   <div className="mt-8">
                     <A href={safeHref(p.cta_link)}
-                       className={`block text-center rounded-xl px-6 py-3 font-medium transition-colors ${hot ? "bg-brand-600 text-white hover:bg-brand-700" : "border border-gray-300 text-gray-800 hover:bg-gray-50"}`}>
+                       className={`block text-center rounded-xl px-6 py-3 font-medium transition-colors ${hot ? "bg-brand-700 text-white hover:bg-brand-800" : "border border-gray-300 text-gray-800 hover:bg-gray-50"}`}>
                       {s(p.cta_text)}
                     </A>
                   </div>
@@ -214,12 +214,12 @@ function Team({ c, tone }: { c: C; tone: Tone }) {
                 {ph ? (
                   <img src={ph} alt={s(m.name)} className="mx-auto w-28 h-28 rounded-full object-cover" />
                 ) : (
-                  <div className="mx-auto w-28 h-28 rounded-full bg-gradient-to-br from-brand-500 to-accent-600 text-white text-3xl font-bold flex items-center justify-center">
+                  <div className="mx-auto w-28 h-28 rounded-full bg-gradient-to-br from-brand-700 to-accent-700 text-white text-3xl font-bold flex items-center justify-center">
                     {s(m.name, 1).toUpperCase()}
                   </div>
                 )}
                 <h3 className="mt-4 font-semibold text-gray-900">{s(m.name)}</h3>
-                <p className="text-sm text-brand-600">{s(m.role)}</p>
+                <p className="text-sm text-brand-700">{s(m.role)}</p>
                 {s(m.bio) && <p className="mt-3 text-sm text-gray-600">{s(m.bio, 600)}</p>}
               </div>
             </Reveal>
@@ -233,7 +233,7 @@ function Team({ c, tone }: { c: C; tone: Tone }) {
 function Cta({ c }: { c: C }) {
   return (
     <section className="px-4 py-20 bg-white">
-      <Reveal className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-br from-brand-600 to-accent-600 px-8 py-14 text-center text-white shadow-xl">
+      <Reveal className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-br from-brand-700 to-accent-700 px-8 py-14 text-center text-white shadow-xl">
         {s(c.title) && <h2 className="text-3xl md:text-4xl font-bold">{s(c.title)}</h2>}
         {s(c.text) && <p className="mt-4 text-white/90 max-w-2xl mx-auto">{s(c.text, 1000)}</p>}
         {s(c.button_text) && (
@@ -255,7 +255,7 @@ function Faq({ c, tone }: { c: C; tone: Tone }) {
           <details className="group bg-white border border-gray-100 rounded-xl p-5 mb-3 shadow-sm hover:shadow-md transition-shadow">
             <summary className="flex justify-between items-center font-medium cursor-pointer list-none">
               {s(q.question)}
-              <span className="ml-4 text-brand-600 text-xl transition-transform group-open:rotate-45">+</span>
+              <span className="ml-4 text-brand-700 text-xl transition-transform group-open:rotate-45">+</span>
             </summary>
             <p className="mt-3 text-gray-600 leading-relaxed whitespace-pre-line">{s(q.answer, 3000)}</p>
           </details>

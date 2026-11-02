@@ -174,7 +174,7 @@ function ListEditor({ def, initial }: { def: ListDef; initial: Record<string, un
           type="button"
           onClick={add}
           disabled={rows.length >= def.max}
-          className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-600 bg-brand-50 hover:bg-brand-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-700 bg-brand-50 hover:bg-brand-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           ＋ Thêm {def.itemLabel.toLowerCase()}
         </button>

@@ -15,7 +15,7 @@ export default async function PagesList({ searchParams }: { searchParams: Promis
           <h1 className="text-3xl font-bold text-gray-900">Trang (Pages)</h1>
           <p className="text-gray-500 mt-1">{pages.length} trang. Mỗi trang gồm nhiều section do bạn sắp xếp.</p>
         </div>
-        <Link href="/admin/pages/new" className="rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-700 transition-colors">
+        <Link href="/admin/pages/new" className="rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-800 transition-colors">
           ＋ Tạo trang mới
         </Link>
       </div>
@@ -38,7 +38,7 @@ export default async function PagesList({ searchParams }: { searchParams: Promis
                   <span className="text-gray-400">Cập nhật {new Date(p.updated_at).toLocaleString("vi-VN")}</span>
                 </div>
               </div>
-              <Link href={`/admin/pages/${p.id}`} className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-600 bg-brand-50 hover:bg-brand-100 transition-colors">Sửa</Link>
+              <Link href={`/admin/pages/${p.id}`} className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-700 bg-brand-50 hover:bg-brand-100 transition-colors">Sửa</Link>
               <a
                 href={published ? `/${p.slug}` : `/admin/preview/${p.id}`}
                 target="_blank" rel="noopener"

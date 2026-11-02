@@ -76,7 +76,7 @@ export default function Sidebar({
               onClick={() => setOpen(false)}
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 isActive(it.href)
-                  ? "bg-brand-600 text-white shadow-lg shadow-brand-600/20"
+                  ? "bg-brand-700 text-white shadow-lg shadow-brand-600/20"
                   : "hover:bg-slate-800 hover:text-white"
               }`}
             >

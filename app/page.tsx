@@ -1,12 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import { getHomeSafe, getMenu } from "@/lib/api";
 import { submitMessage } from "@/lib/actions";
+import { safeHref } from "@/lib/safe";
+import SubmitButton from "@/components/admin/SubmitButton";
 import Navbar from "@/components/Navbar";
 import HeroVideo from "@/components/HeroVideo";
 import Reveal from "@/components/Reveal";
 
 const inputCls =
-  "w-full border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-brand-500 transition";
+  "mt-1 w-full border border-gray-300 rounded-lg p-3 font-normal text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition";
+const labelCls = "block text-sm font-medium text-gray-700";
 
 function SectionTitle({ title, sub }: { title: string; sub?: string }) {
   return (
@@ -88,8 +91,8 @@ export default async function Home({
                   }`}
                 >
                   <a
-                    href={h.cta_link || "#contact"}
-                    className="bg-brand-600 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-brand-700 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand-600/30 transition-all"
+                    href={safeHref(h.cta_link || "#contact")}
+                    className="bg-brand-700 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-brand-800 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand-600/30 transition-all"
                   >
                     {h.cta_text}
                   </a>
@@ -134,7 +137,7 @@ export default async function Home({
                         className="mb-4 rounded-xl w-full h-40 object-cover"
                       />
                     ) : (
-                      <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500 to-accent-600 text-white flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+                      <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-700 to-accent-700 text-white flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
                         {i + 1}
                       </div>
                     )}
@@ -181,7 +184,7 @@ export default async function Home({
                           .sort((a, b) => a.step_order - b.step_order)
                           .map((s) => (
                             <li key={s.id} className="relative pl-8">
-                              <span className="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-gradient-to-br from-brand-600 to-accent-600 text-white text-sm font-semibold flex items-center justify-center ring-4 ring-white">
+                              <span className="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-gradient-to-br from-brand-700 to-accent-700 text-white text-sm font-semibold flex items-center justify-center ring-4 ring-white">
                                 {s.step_order}
                               </span>
                               <p className="font-semibold text-gray-900">
@@ -241,7 +244,7 @@ export default async function Home({
                   <details className="group bg-white border border-gray-100 rounded-xl p-5 mb-3 shadow-sm hover:shadow-md transition-shadow">
                     <summary className="flex justify-between items-center font-medium cursor-pointer list-none">
                       {q.question}
-                      <span className="ml-4 text-brand-600 text-xl transition-transform group-open:rotate-45">
+                      <span className="ml-4 text-brand-700 text-xl transition-transform group-open:rotate-45">
                         +
                       </span>
                     </summary>
@@ -286,8 +289,8 @@ export default async function Home({
               {c?.facebook && (
                 <p>
                   <a
-                    href={c.facebook}
-                    className="text-brand-600 hover:underline"
+                    href={safeHref(c.facebook)}
+                    className="text-brand-700 hover:underline"
                   >
                     Facebook
                   </a>
@@ -310,29 +313,35 @@ export default async function Home({
                     lại.
                   </p>
                 )}
-                <input
-                  name="name"
-                  placeholder="Họ tên"
-                  required
-                  className={inputCls}
-                />
-                <input
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  required
-                  className={inputCls}
-                />
-                <textarea
-                  name="message"
-                  placeholder="Nội dung"
-                  rows={4}
-                  required
-                  className={inputCls}
-                />
-                <button className="w-full bg-brand-600 text-white rounded-lg py-3 font-medium hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/30 transition-all">
-                  Gửi tin nhắn
-                </button>
+                <label className={labelCls}>
+                  Họ tên
+                  <input
+                    name="name"
+                    autoComplete="name"
+                    required
+                    className={inputCls}
+                  />
+                </label>
+                <label className={labelCls}>
+                  Email
+                  <input
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className={inputCls}
+                  />
+                </label>
+                <label className={labelCls}>
+                  Nội dung
+                  <textarea
+                    name="message"
+                    rows={4}
+                    required
+                    className={inputCls}
+                  />
+                </label>
+                <SubmitButton label="Gửi tin nhắn" pendingLabel="Đang gửi..." block />
               </form>
             </Reveal>
           </div>

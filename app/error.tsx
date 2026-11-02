@@ -8,7 +8,7 @@ export default function ErrorPage({ reset }: { error: Error & { digest?: string 
         <p className="mt-3 text-gray-600">
           Máy chủ có thể đang thức dậy sau một thời gian không hoạt động. Vui lòng thử lại sau ít giây.
         </p>
-        <button onClick={reset} className="mt-6 rounded-lg bg-brand-600 px-6 py-3 font-medium text-white hover:bg-brand-700">
+        <button onClick={reset} className="mt-6 rounded-lg bg-brand-700 px-6 py-3 font-medium text-white hover:bg-brand-800">
           Thử lại
         </button>
       </div>

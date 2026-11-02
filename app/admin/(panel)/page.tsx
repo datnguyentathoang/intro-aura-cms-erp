@@ -64,7 +64,7 @@ export default async function AdminHome() {
             <Link
               key={q.href}
               href={q.href}
-              className="flex items-center justify-between bg-white border border-gray-100 rounded-xl px-5 py-4 text-sm font-medium text-gray-700 hover:border-brand-300 hover:text-brand-600 hover:shadow-md transition-all"
+              className="flex items-center justify-between bg-white border border-gray-100 rounded-xl px-5 py-4 text-sm font-medium text-gray-700 hover:border-brand-300 hover:text-brand-700 hover:shadow-md transition-all"
             >
               {q.label}
               <span>→</span>

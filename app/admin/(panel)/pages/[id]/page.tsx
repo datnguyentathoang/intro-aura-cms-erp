@@ -26,7 +26,7 @@ export default async function EditPageScreen({
 
   return (
     <div className="space-y-8 max-w-4xl">
-      <Link href="/admin/pages" className="text-sm font-medium text-brand-600 hover:underline">← Quay lại danh sách trang</Link>
+      <Link href="/admin/pages" className="text-sm font-medium text-brand-700 hover:underline">← Quay lại danh sách trang</Link>
 
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
@@ -91,7 +91,7 @@ export default async function EditPageScreen({
                 </div>
                 <p className="mt-1 text-sm text-gray-700 truncate">{summarize(s.content ?? {})}</p>
               </div>
-              <Link href={`/admin/pages/${page.id}/sections/${s.id}`} className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-600 bg-brand-50 hover:bg-brand-100 transition-colors">Sửa</Link>
+              <Link href={`/admin/pages/${page.id}/sections/${s.id}`} className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-700 bg-brand-50 hover:bg-brand-100 transition-colors">Sửa</Link>
               <DeleteButton action={deleteSection.bind(null, page.id, s.id)} message="Xóa section này?" />
             </li>
           ))}
@@ -110,7 +110,7 @@ export default async function EditPageScreen({
               {SECTION_ORDER.map((t) => <option key={t} value={t} title={SCHEMAS[t].description}>{SCHEMAS[t].label}</option>)}
             </select>
           </label>
-          <button className="rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-700 transition-colors">＋ Thêm</button>
+          <button className="rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-800 transition-colors">＋ Thêm</button>
         </form>
       </section>
     </div>

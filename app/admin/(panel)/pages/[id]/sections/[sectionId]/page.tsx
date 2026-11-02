@@ -25,7 +25,7 @@ export default async function EditSection({
 
   return (
     <div className="space-y-6">
-      <Link href={`/admin/pages/${id}`} className="text-sm font-medium text-brand-600 hover:underline">
+      <Link href={`/admin/pages/${id}`} className="text-sm font-medium text-brand-700 hover:underline">
         ← Quay lại trang: {page.title}
       </Link>
       <div>

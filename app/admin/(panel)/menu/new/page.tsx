@@ -13,7 +13,7 @@ export default async function NewMenuItem({ searchParams }: { searchParams: Prom
   ]);
   return (
     <div className="space-y-6">
-      <Link href="/admin/menu" className="text-sm font-medium text-brand-600 hover:underline">← Quay lại menu</Link>
+      <Link href="/admin/menu" className="text-sm font-medium text-brand-700 hover:underline">← Quay lại menu</Link>
       <h1 className="text-3xl font-bold text-gray-900">Thêm mục menu</h1>
       {error && <p className="max-w-2xl rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>}
       <MenuForm
