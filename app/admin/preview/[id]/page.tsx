@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { adminJson } from "@/lib/api";
+import { adminJson, withSharedLists } from "@/lib/api";
 import type { AdminPage } from "@/lib/admin-types";
 import SiteShell from "@/components/SiteShell";
 import SectionRenderer from "@/components/SectionRenderer";
@@ -12,9 +12,11 @@ export default async function Preview({ params }: { params: Promise<{ id: string
   const page = await adminJson<AdminPage>(`/api/admin/pages/${id}`);
   if (!page) notFound();
 
-  const sections = (page.sections ?? [])
-    .filter((s) => s.is_published)
-    .map((s) => ({ id: s.id, type: s.type, content: s.content ?? {} }));
+  const sections = await withSharedLists(
+    (page.sections ?? [])
+      .filter((s) => s.is_published)
+      .map((s) => ({ id: s.id, type: s.type, content: s.content ?? {} }))
+  );
 
   return (
     <SiteShell darkTop={sections[0]?.type === "hero"}>

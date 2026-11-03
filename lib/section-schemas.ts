@@ -67,7 +67,7 @@ export const SCHEMAS: Record<string, SectionSchema> = {
   },
   testimonials: {
     label: "Đánh giá khách hàng",
-    description: "Các trích dẫn của khách hàng.",
+    description: "Các trích dẫn của khách hàng. Để trống danh sách để dùng đánh giá chung.",
     fields: [
       { name: "title", label: "Tiêu đề khối", type: "text" },
       { name: "subtitle", label: "Mô tả khối", type: "textarea" },
@@ -84,7 +84,7 @@ export const SCHEMAS: Record<string, SectionSchema> = {
   },
   pricing: {
     label: "Bảng giá",
-    description: "Các gói dịch vụ; có thể đánh dấu một gói nổi bật.",
+    description: "Các gói dịch vụ; có thể đánh dấu một gói nổi bật. Để trống danh sách để dùng bảng giá chung.",
     fields: [
       { name: "title", label: "Tiêu đề khối", type: "text" },
       { name: "subtitle", label: "Mô tả khối", type: "textarea" },
@@ -105,7 +105,7 @@ export const SCHEMAS: Record<string, SectionSchema> = {
   },
   team: {
     label: "Đội ngũ",
-    description: "Ảnh, tên và chức vụ của các thành viên.",
+    description: "Ảnh, tên và chức vụ của các thành viên. Để trống danh sách để dùng đội ngũ chung.",
     fields: [
       { name: "title", label: "Tiêu đề khối", type: "text" },
       { name: "subtitle", label: "Mô tả khối", type: "textarea" },

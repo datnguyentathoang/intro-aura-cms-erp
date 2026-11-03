@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPage } from "@/lib/api";
+import { getPage, withSharedLists } from "@/lib/api";
 import { safeSrc } from "@/lib/safe";
 import SiteShell from "@/components/SiteShell";
 import SectionRenderer from "@/components/SectionRenderer";
@@ -28,11 +28,12 @@ export default async function DynamicPage({ params }: Props) {
   if (!page) notFound();
 
   const darkTop = page.sections[0]?.type === "hero";
+  const sections = await withSharedLists(page.sections);
 
   return (
     <SiteShell darkTop={darkTop}>
-      {page.sections.length > 0 ? (
-        <SectionRenderer sections={page.sections} pageTitle={page.title} />
+      {sections.length > 0 ? (
+        <SectionRenderer sections={sections} pageTitle={page.title} />
       ) : (
         <section className="max-w-3xl mx-auto px-4 py-24 text-center">
           <h1 className="text-3xl font-bold text-gray-900">{page.title}</h1>

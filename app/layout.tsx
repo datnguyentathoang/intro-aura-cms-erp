@@ -11,7 +11,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi" data-scroll-behavior="smooth">
-      <body className="antialiased text-gray-900">{children}</body>
+      <body className="antialiased text-gray-900">
+        {/* Reveal ẩn nội dung cho tới khi JS chạy; tắt JS vẫn phải đọc được */}
+        <noscript><style>{`.reveal { opacity: 1; transform: none; }`}</style></noscript>
+        {children}
+      </body>
     </html>
   )
 }

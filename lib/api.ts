@@ -3,7 +3,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ACCESS_COOKIE } from "@/lib/auth-cookies";
 import type { BlogQuery } from "@/lib/blog";
-import type { BlogCategory, BlogPostData, BlogPostList, Contact, Faq, Feature, Hero, Screenshot, Workflow, MenuNode, PublicPage } from "@/lib/types";
+import { list } from "@/lib/safe";
+import type { BlogCategory, BlogPostData, BlogPostList, Contact, Faq, Feature, Hero, Screenshot, Workflow, MenuNode, ProjectData, ProjectListItem, PublicPage, PublicPricingPlan, PublicSection, PublicTeamMember, PublicTestimonial } from "@/lib/types";
 
 function apiUrl(path: string) {
   const base = process.env.API_BASE_URL;
@@ -214,4 +215,70 @@ export async function getBlogSlugs(): Promise<{ slug: string; updated_at: string
   } catch {
     return [];
   }
+}
+
+// ---------- Dự án, đội ngũ, đánh giá, bảng giá (công khai) ----------
+// Nội dung chính của trang. Lỗi API -> ném lỗi, tránh hiển thị nhầm thành "chưa có dữ liệu"
+async function requiredList<T>(path: string): Promise<T[]> {
+  const res = await publicFetch(path, 15000);
+  if (!res.ok) throw new Error(`API trả về lỗi ${res.status}`);
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
+}
+
+// Phần phụ của trang và sitemap. Có sự cố thì trả mảng rỗng, trang vẫn hiển thị
+async function optionalList<T>(path: string): Promise<T[]> {
+  try {
+    const res = await publicFetch(path, 8000);
+    const data = res.ok ? await res.json() : [];
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+export const getProjects = cache(() => requiredList<ProjectListItem>("/api/public/portfolio/projects"));
+
+// 404 -> null (dự án không tồn tại hoặc chưa xuất bản). Lỗi khác -> ném lỗi, tránh biến sự cố tạm thời thành 404
+export const getProject = cache(async (slug: string): Promise<ProjectData | null> => {
+  const res = await publicFetch(`/api/public/portfolio/projects/${encodeURIComponent(slug)}`, 15000);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`API trả về lỗi ${res.status}`);
+  const d = (await res.json()) as Partial<ProjectData>;
+  if (!d.project) return null;
+  return {
+    project: { ...d.project, images: Array.isArray(d.project.images) ? d.project.images : [] },
+    related: Array.isArray(d.related) ? d.related : [],
+  };
+});
+
+export function getProjectSlugs() {
+  return optionalList<{ slug: string; updated_at: string }>("/api/public/portfolio/slugs");
+}
+
+// Gói chưa nhập nút hoặc link vẫn có đường liên hệ
+export const getPricingPlans = cache(async () => {
+  const plans = await requiredList<PublicPricingPlan>("/api/public/pricing");
+  return plans.map((p) => ({ ...p, cta_text: p.cta_text || "Liên hệ tư vấn", cta_link: p.cta_link || "/#contact" }));
+});
+
+export const getTeamMembers = cache(() => optionalList<PublicTeamMember>("/api/public/team"));
+
+export const getTestimonials = cache(() => optionalList<PublicTestimonial>("/api/public/testimonials"));
+
+const SHARED_LISTS: Record<string, { field: string; load: () => Promise<unknown[]> }> = {
+  team: { field: "members", load: getTeamMembers },
+  testimonials: { field: "items", load: getTestimonials },
+  pricing: { field: "plans", load: () => getPricingPlans().catch(() => []) },
+};
+
+// Section đội ngũ, đánh giá, bảng giá để trống danh sách thì dùng dữ liệu chung nhập trong admin.
+// Chỉ gọi API khi trang thật sự có section như vậy.
+export function withSharedLists(sections: PublicSection[]): Promise<PublicSection[]> {
+  return Promise.all(sections.map(async (sec) => {
+    const shared = SHARED_LISTS[sec.type];
+    const content = sec.content && typeof sec.content === "object" ? sec.content : {};
+    if (!shared || list(content[shared.field]).length > 0) return sec;
+    return { ...sec, content: { ...content, [shared.field]: await shared.load() } };
+  }));
 }

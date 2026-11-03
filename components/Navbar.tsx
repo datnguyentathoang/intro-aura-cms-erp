@@ -87,7 +87,7 @@ export default function Navbar({ brand = "Aura ERP", logoUrl, marquee, menu = []
     : menu;
 
   const isActive = (m: MenuNode) =>
-    anchorMode ? onHome && m.href === `#${active}` : m.href !== null && m.href === pathname;
+    anchorMode ? onHome && m.href === `#${active}` : m.href !== null && (m.href === pathname || (m.href !== "/" && pathname.startsWith(`${m.href}/`)));
   const hasActive = (m: MenuNode): boolean => isActive(m) || m.children.some(hasActive);
 
   const topCls = (a: boolean) =>

@@ -61,3 +61,20 @@ export type BlogPostDetail = BlogPostCard & {
   content: string; seo_title: string | null; seo_description: string | null; updated_at: string;
 };
 export type BlogPostData = { post: BlogPostDetail; related: BlogRelatedPost[] };
+
+export type ProjectListItem = {
+  title: string; slug: string; client_name: string | null; industry: string | null;
+  summary: string | null; thumbnail_url: string | null;
+};
+export type ProjectImage = { image_url: string; caption: string | null };
+export type ProjectDetail = ProjectListItem & {
+  content: string; seo_title: string | null; seo_description: string | null;
+  published_at: string | null; updated_at: string; images: ProjectImage[];
+};
+export type ProjectData = { project: ProjectDetail; related: ProjectListItem[] };
+export type PublicTeamMember = { name: string; role: string | null; bio: string | null; photo_url: string | null };
+export type PublicTestimonial = { quote: string; name: string; role: string | null; avatar_url: string | null };
+export type PublicPricingPlan = {
+  name: string; price: string | null; period: string | null; description: string | null;
+  features: string[]; highlighted: boolean; cta_text: string | null; cta_link: string | null;
+};
