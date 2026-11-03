@@ -2,15 +2,10 @@
 import { useState } from "react";
 import SubmitButton from "@/components/admin/SubmitButton";
 import ImagePick from "@/components/admin/ImagePick";
+import { slugify } from "@/lib/slugify";
 
 const input =
   "mt-1.5 w-full border border-gray-200 rounded-lg px-3 py-2.5 font-normal bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition";
-
-function slugify(s: string) {
-  return s
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d")
-    .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
-}
 
 export default function PageMetaForm({
   mode, initial, action, submitLabel,

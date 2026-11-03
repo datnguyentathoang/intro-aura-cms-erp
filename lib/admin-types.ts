@@ -32,6 +32,48 @@ export type PageListItem = {
   section_count: number;
 };
 
+export type AdminPostStatus = "draft" | "published" | "archived";
+
+export type AdminPostListItem = {
+  id: string;
+  title: string;
+  slug: string;
+  status: AdminPostStatus;
+  thumbnail_url: string | null;
+  author_name: string | null;
+  published_at: string | null;
+  updated_at: string;
+  categories: { id: string; name: string }[];
+};
+
+export type AdminPostList = { items: AdminPostListItem[]; total: number; page: number; page_size: number };
+
+export type AdminPost = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string;
+  thumbnail_url: string | null;
+  status: AdminPostStatus;
+  author_name: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  read_minutes: number;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+  category_ids: string[];
+};
+
+export type AdminCategory = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  post_count: number;
+};
+
 export type AdminMenuItem = {
   id: string;
   parent_id: string | null;
