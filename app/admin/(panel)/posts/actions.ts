@@ -1,16 +1,10 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { callApi, type ApiResult } from "@/lib/admin-call";
+import { callApi, withError, type ApiResult } from "@/lib/admin-call";
 import { rethrowRedirect, uploadImageFile } from "@/lib/upload";
 
 export type PostFormState = { error?: string };
-
-function withError(path: string, error: string) {
-  const url = new URL(path, "http://x");
-  url.searchParams.set("error", error);
-  return url.pathname + url.search;
-}
 
 function text(form: FormData, name: string) {
   return String(form.get(name) ?? "").trim();

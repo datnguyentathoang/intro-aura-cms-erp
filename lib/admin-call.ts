@@ -23,3 +23,10 @@ export async function callApi<T = unknown>(
   }
   return { ok: false, status: res.status, data: null, error };
 }
+
+// Gắn thông báo lỗi vào đường dẫn để trang đích hiển thị
+export function withError(path: string, error: string) {
+  const url = new URL(path, "http://x");
+  url.searchParams.set("error", error);
+  return url.pathname + url.search;
+}

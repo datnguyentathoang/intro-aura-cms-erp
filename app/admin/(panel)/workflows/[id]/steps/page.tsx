@@ -48,6 +48,7 @@ export default async function WorkflowStepsPage({
         </summary>
         <div className="px-6 pb-6">
           <RecordForm
+            key={steps.length}
             resource={RESOURCES.workflow_steps}
             record={{ step_order: nextOrder }}
             relations={{}}

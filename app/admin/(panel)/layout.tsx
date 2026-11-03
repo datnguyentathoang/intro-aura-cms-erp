@@ -10,6 +10,9 @@ const ICONS: Record<string, string> = {
   workflows: "🔀",
   screenshots: "📸",
   faqs: "❓",
+  team_members: "👥",
+  testimonials: "💬",
+  pricing_plans: "💰",
   contact_info: "📞",
 };
 
@@ -27,6 +30,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     { href: "/admin", label: "Tổng quan", icon: "📊" },
     { href: "/admin/posts", label: "Bài viết", icon: "📝" },
     { href: "/admin/categories", label: "Chuyên mục", icon: "🏷️" },
+    { href: "/admin/projects", label: "Dự án", icon: "💼" },
     { href: "/admin/pages", label: "Trang", icon: "📄" },
     { href: "/admin/menu", label: "Menu website", icon: "🧭" },
     ...Object.entries(RESOURCES)

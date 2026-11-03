@@ -1,10 +1,13 @@
 'use server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { RESOURCES } from '@/lib/resources'
+import { RESOURCES, type Field } from '@/lib/resources'
 import { adminFetch, adminJson, ensureOk, publicPost } from '@/lib/api'
+import { rethrowRedirect } from '@/lib/upload'
 
-const FOLDERS = ['hero', 'features', 'workflows', 'screenshots']
+const FOLDERS = ['hero', 'features', 'workflows', 'screenshots', 'team_members', 'testimonials']
+
+export type RecordFormState = { error?: string }
 
 async function uploadImage(file: File, table: string): Promise<string> {
   const form = new FormData()
@@ -17,17 +20,50 @@ async function uploadImage(file: File, table: string): Promise<string> {
 }
 
 // Thêm / sửa cho mọi bảng. id = null nghĩa là thêm mới.
-export async function saveRecord(table: string, id: string | null, formData: FormData) {
+// Trả lỗi về form thay vì ném lỗi: ở production Next ẩn nội dung lỗi ném ra từ Server Action
+export async function saveRecord(
+  table: string,
+  id: string | null,
+  _prev: RecordFormState,
+  formData: FormData
+): Promise<RecordFormState> {
   const res = RESOURCES[table]
-  if (!res?.api) throw new Error('Bảng không hợp lệ')
+  if (!res?.api) return { error: 'Bảng không hợp lệ' }
 
+  try {
+    await writeRecord(table, res.api, Boolean(res.single), res.fields, id, formData)
+  } catch (e) {
+    rethrowRedirect(e)
+    return { error: e instanceof Error ? e.message : 'Không lưu được dữ liệu' }
+  }
+
+  revalidatePath('/')
+  revalidatePath(`/admin/${table}`)
+  redirect(`/admin/${table}`)
+}
+
+async function writeRecord(
+  table: string,
+  api: string,
+  single: boolean,
+  fields: Field[],
+  id: string | null,
+  formData: FormData
+) {
   const payload: Record<string, unknown> = {}
-  for (const f of res.fields) {
+  for (const f of fields) {
     if (f.type === 'image') {
       const file = formData.get(f.name)
       if (file instanceof File && file.size > 0) {
         payload[f.name] = await uploadImage(file, table)
+      } else if (formData.get(`remove__${f.name}`) === '1') {
+        payload[f.name] = null
       }
+    } else if (f.type === 'lines') {
+      payload[f.name] = String(formData.get(f.name) ?? '')
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
     } else if (f.type === 'checkbox') {
       payload[f.name] = formData.get(f.name) === 'on'
     } else if (f.type === 'number') {
@@ -38,11 +74,11 @@ export async function saveRecord(table: string, id: string | null, formData: For
     }
   }
 
-  const base = `/api/admin/${res.api}`
+  const base = `/api/admin/${api}`
 
   // API ghi đè toàn bộ bản ghi khi sửa, nên gộp với dữ liệu hiện tại
   // để không làm mất ảnh cũ hoặc các cột không nằm trong form.
-  if (res.single) {
+  if (single) {
     const current = (await adminJson<Record<string, unknown>>(base)) ?? {}
     await ensureOk(await adminFetch(base, { method: 'PUT', json: { ...current, ...payload } }))
   } else if (id) {
@@ -54,10 +90,6 @@ export async function saveRecord(table: string, id: string | null, formData: For
   } else {
     await ensureOk(await adminFetch(base, { method: 'POST', json: payload }))
   }
-
-  revalidatePath('/')
-  revalidatePath(`/admin/${table}`)
-  redirect(`/admin/${table}`)
 }
 
 export async function deleteRecord(table: string, id: string) {

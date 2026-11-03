@@ -5,12 +5,15 @@ export default function SubmitButton({
   label,
   pendingLabel = 'Đang lưu...',
   block = false,
+  pending: pendingProp,
 }: {
   label: string
   pendingLabel?: string
   block?: boolean
+  pending?: boolean // truyền vào khi form tự gửi trong startTransition, useFormStatus không thấy được
 }) {
-  const { pending } = useFormStatus()
+  const status = useFormStatus()
+  const pending = pendingProp ?? status.pending
   return (
     <button
       disabled={pending}

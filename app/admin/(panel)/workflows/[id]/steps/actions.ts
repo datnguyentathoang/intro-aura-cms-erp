@@ -1,7 +1,9 @@
 'use server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import type { RecordFormState } from '@/lib/actions'
 import { adminFetch, ensureOk } from '@/lib/api'
+import { rethrowRedirect } from '@/lib/upload'
 
 const base = (wf: string) => `/api/admin/workflows/${wf}/steps`
 
@@ -18,16 +20,31 @@ function bodyOf(formData: FormData) {
   }
 }
 
-export async function addStep(workflowId: string, formData: FormData) {
-  await ensureOk(await adminFetch(base(workflowId), { method: 'POST', json: bodyOf(formData) }))
+export async function addStep(workflowId: string, _prev: RecordFormState, formData: FormData): Promise<RecordFormState> {
+  try {
+    await ensureOk(await adminFetch(base(workflowId), { method: 'POST', json: bodyOf(formData) }))
+  } catch (e) {
+    rethrowRedirect(e)
+    return { error: e instanceof Error ? e.message : 'Không lưu được bước' }
+  }
   refresh(workflowId)
   redirect(`/admin/workflows/${workflowId}/steps`)
 }
 
-export async function updateStep(workflowId: string, stepId: string, formData: FormData) {
-  await ensureOk(
-    await adminFetch(`${base(workflowId)}/${stepId}`, { method: 'PUT', json: bodyOf(formData) })
-  )
+export async function updateStep(
+  workflowId: string,
+  stepId: string,
+  _prev: RecordFormState,
+  formData: FormData
+): Promise<RecordFormState> {
+  try {
+    await ensureOk(
+      await adminFetch(`${base(workflowId)}/${stepId}`, { method: 'PUT', json: bodyOf(formData) })
+    )
+  } catch (e) {
+    rethrowRedirect(e)
+    return { error: e instanceof Error ? e.message : 'Không lưu được bước' }
+  }
   refresh(workflowId)
   redirect(`/admin/workflows/${workflowId}/steps`)
 }

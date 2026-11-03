@@ -85,3 +85,36 @@ export type AdminMenuItem = {
   sort_order: number;
   is_published: boolean;
 };
+
+export type AdminProjectStatus = "draft" | "published";
+
+export type AdminProjectListItem = {
+  id: string;
+  title: string;
+  slug: string;
+  client_name: string | null;
+  industry: string | null;
+  thumbnail_url: string | null;
+  status: AdminProjectStatus;
+  published_at: string | null;
+  updated_at: string;
+  image_count: number;
+};
+
+export type AdminProject = {
+  id: string;
+  title: string;
+  slug: string;
+  client_name: string | null;
+  industry: string | null;
+  summary: string | null;
+  content: string;
+  thumbnail_url: string | null;
+  status: AdminProjectStatus;
+  seo_title: string | null;
+  seo_description: string | null;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+  images: { image_url: string; caption: string | null }[];
+};

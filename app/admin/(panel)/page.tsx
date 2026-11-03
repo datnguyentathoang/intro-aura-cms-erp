@@ -28,6 +28,7 @@ export default async function AdminHome() {
 
   const quick = [
     { label: "Viết bài mới", href: "/admin/posts/new" },
+    { label: "Thêm dự án mới", href: "/admin/projects/new" },
     { label: "Sửa banner đầu trang", href: "/admin/hero" },
     { label: "Thêm tính năng mới", href: "/admin/features" },
     { label: "Quản lý các bước của luồng", href: "/admin/workflows" },

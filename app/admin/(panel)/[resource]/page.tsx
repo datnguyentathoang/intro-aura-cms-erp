@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { RESOURCES } from "@/lib/resources";
 import { deleteRecord, saveRecord, moveRecord } from "@/lib/actions";
 import { adminJson } from "@/lib/api";
+import { safeSrc } from "@/lib/safe";
 import RecordForm from "@/components/RecordForm";
 import DeleteButton from "@/components/admin/DeleteButton";
 import type { Row } from "@/lib/types";
@@ -33,6 +34,7 @@ export default async function ResourcePage({
           </p>
         </div>
         <RecordForm
+          key={JSON.stringify(data)}
           resource={res}
           record={data}
           relations={{}}
@@ -44,6 +46,7 @@ export default async function ResourcePage({
   }
 
   const rows = (await adminJson<Row[]>(apiPath)) ?? [];
+  const imageField = res.fields.find((f) => f.type === "image")?.name;
 
   return (
     <div className="space-y-8 max-w-4xl">
@@ -51,6 +54,7 @@ export default async function ResourcePage({
         <div>
           <h1 className="text-3xl font-bold text-gray-900">{res.title}</h1>
           <p className="text-gray-500 mt-1">{rows.length} mục</p>
+          {res.hint && <p className="text-sm text-gray-600 mt-1">{res.hint}</p>}
         </div>
       </div>
 
@@ -62,7 +66,9 @@ export default async function ResourcePage({
           </span>
         </summary>
         <div className="px-6 pb-6">
+          {/* key theo số dòng: thêm xong thì form trống lại */}
           <RecordForm
+            key={rows.length}
             resource={res}
             relations={{}}
             action={saveRecord.bind(null, resource, null)}
@@ -74,7 +80,8 @@ export default async function ResourcePage({
       <ul className="space-y-3">
         {rows.map((r, idx) => {
           const id = String(r.id);
-          const img = typeof r.image_url === "string" ? r.image_url : null;
+          const img = imageField ? safeSrc(r[imageField]) : null;
+          const sub = res.listSubField ? r[res.listSubField] : null;
           const hidden = r.is_published === false;
           return (
             <li
@@ -112,6 +119,7 @@ export default async function ResourcePage({
                 <p className="font-semibold text-gray-900 truncate">
                   {String(r[res.listField ?? "title"] ?? "(không có tên)")}
                 </p>
+                {typeof sub === "string" && sub && <p className="text-sm text-gray-600 truncate">{sub}</p>}
                 <div className="mt-1 flex gap-2">
                   {typeof r.sort_order === "number" && (
                     <span className="text-xs bg-slate-100 text-slate-600 rounded-full px-2 py-0.5">
