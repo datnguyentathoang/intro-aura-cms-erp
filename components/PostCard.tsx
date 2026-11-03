@@ -1,13 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { formatPostDate } from "@/lib/blog";
 import { safeSrc } from "@/lib/safe";
-import type { BlogPostCard } from "@/lib/types";
+import type { BlogPostCard, BlogRelatedPost } from "@/lib/types";
+import PostMeta from "@/components/PostMeta";
 
 // featured = true: thẻ lớn nằm ngang (từ md trở lên), dùng cho bài đầu tiên của trang
-export default function PostCard({ post, featured = false }: { post: BlogPostCard; featured?: boolean }) {
+// large = true: thẻ dọc nhưng tiêu đề lớn hơn, dùng cho layout danh sách một cột
+// titleAs: cấp tiêu đề của thẻ, để không nhảy cấp khi thẻ nằm dưới một h2 khác
+export default function PostCard({
+  post,
+  featured = false,
+  large = false,
+  titleAs: Title = "h2",
+}: {
+  post: BlogRelatedPost & Partial<BlogPostCard>;
+  featured?: boolean;
+  large?: boolean;
+  titleAs?: "h2" | "h3";
+}) {
   const img = safeSrc(post.thumbnail_url);
-  const date = formatPostDate(post.published_at);
   const categories = Array.isArray(post.categories) ? post.categories : [];
   // Thẻ lớn: ảnh phủ cả khung (absolute) để tỉ lệ ảnh không làm thay đổi chiều cao thẻ
   const media = featured ? "aspect-video md:absolute md:inset-0 md:aspect-auto md:h-full" : "aspect-video";
@@ -41,16 +52,16 @@ export default function PostCard({ post, featured = false }: { post: BlogPostCar
             {categories.map((c) => c.name).join(" · ")}
           </p>
         )}
-        <h2
+        <Title
           className={`font-bold text-gray-900 group-hover:text-brand-700 transition-colors duration-200 motion-reduce:transition-none [overflow-wrap:anywhere] text-balance ${
-            featured ? "text-2xl md:text-3xl leading-tight" : "text-xl leading-snug"
+            featured ? "text-2xl md:text-3xl leading-tight" : large ? "text-2xl leading-snug" : "text-xl leading-snug"
           }`}
         >
           {/* after:inset-0 phủ link lên cả thẻ, chỉ cần một điểm dừng khi dùng phím Tab */}
           <Link href={`/blog/${encodeURIComponent(post.slug)}`} className="outline-none after:absolute after:inset-0">
             {post.title}
           </Link>
-        </h2>
+        </Title>
         {post.excerpt && (
           <p className={`mt-3 text-base leading-relaxed text-gray-600 [overflow-wrap:anywhere] ${featured ? "line-clamp-4" : "line-clamp-3"}`}>
             {post.excerpt}
@@ -58,13 +69,7 @@ export default function PostCard({ post, featured = false }: { post: BlogPostCar
         )}
 
         <div className="mt-auto flex items-end justify-between gap-4 pt-6">
-          <p className="flex flex-wrap gap-x-2 text-sm text-gray-600 tabular-nums min-w-0 [overflow-wrap:anywhere]">
-            {post.author_name && <span>{post.author_name}</span>}
-            {post.author_name && date && <span aria-hidden="true">·</span>}
-            {date && <time dateTime={post.published_at ?? undefined}>{date}</time>}
-            {(post.author_name || date) && <span aria-hidden="true">·</span>}
-            <span>{post.read_minutes} phút đọc</span>
-          </p>
+          <PostMeta author={post.author_name} publishedAt={post.published_at} readMinutes={post.read_minutes} />
           <svg
             className="w-5 h-5 shrink-0 text-brand-700 motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover:translate-x-1"
             fill="none"

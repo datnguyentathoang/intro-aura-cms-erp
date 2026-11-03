@@ -2,7 +2,8 @@ import { cache } from "react"
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ACCESS_COOKIE } from "@/lib/auth-cookies";
-import type { BlogPostList, Contact, Faq, Feature, Hero, Screenshot, Workflow, MenuNode, PublicPage } from "@/lib/types";
+import type { BlogQuery } from "@/lib/blog";
+import type { BlogCategory, BlogPostData, BlogPostList, Contact, Faq, Feature, Hero, Screenshot, Workflow, MenuNode, PublicPage } from "@/lib/types";
 
 function apiUrl(path: string) {
   const base = process.env.API_BASE_URL;
@@ -169,14 +170,48 @@ export const getHomeSafe = cache(async (): Promise<HomeData | null> => {
 const BLOG_PAGE_SIZE = 10;
 
 // Lỗi API -> ném lỗi, tránh hiển thị nhầm thành "chưa có bài viết"
-export async function getBlogPosts(page = 1): Promise<BlogPostList> {
-  const res = await publicFetch(`/api/public/blog/posts?page=${page}&page_size=${BLOG_PAGE_SIZE}`, 15000);
+export async function getBlogPosts(query: Pick<BlogQuery, "page" | "category" | "q">): Promise<BlogPostList> {
+  const params = new URLSearchParams({ page: String(query.page), page_size: String(BLOG_PAGE_SIZE) });
+  if (query.category) params.set("category", query.category);
+  if (query.q) params.set("q", query.q);
+  const res = await publicFetch(`/api/public/blog/posts?${params}`, 15000);
   if (!res.ok) throw new Error(`API trả về lỗi ${res.status}`);
   const d = (await res.json()) as Partial<BlogPostList>;
   return {
     items: Array.isArray(d.items) ? d.items : [],
     total: typeof d.total === "number" ? d.total : 0,
-    page: typeof d.page === "number" ? d.page : page,
+    page: typeof d.page === "number" ? d.page : query.page,
     page_size: typeof d.page_size === "number" && d.page_size > 0 ? d.page_size : BLOG_PAGE_SIZE,
   };
+}
+
+// 404 -> null (bài không tồn tại hoặc chưa xuất bản). Lỗi khác -> ném lỗi, tránh biến sự cố tạm thời thành 404
+export const getBlogPost = cache(async (slug: string): Promise<BlogPostData | null> => {
+  const res = await publicFetch(`/api/public/blog/posts/${encodeURIComponent(slug)}`, 15000);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`API trả về lỗi ${res.status}`);
+  const d = (await res.json()) as Partial<BlogPostData>;
+  if (!d.post) return null;
+  return { post: d.post, related: Array.isArray(d.related) ? d.related : [] };
+});
+
+// Chuyên mục và sitemap chịu lỗi: có sự cố thì trả mảng rỗng, trang vẫn hiển thị
+export const getBlogCategories = cache(async (): Promise<BlogCategory[]> => {
+  try {
+    const res = await publicFetch("/api/public/blog/categories", 8000);
+    const data = res.ok ? await res.json() : [];
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+});
+
+export async function getBlogSlugs(): Promise<{ slug: string; updated_at: string }[]> {
+  try {
+    const res = await publicFetch("/api/public/blog/slugs", 8000);
+    const data = res.ok ? await res.json() : [];
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
 }

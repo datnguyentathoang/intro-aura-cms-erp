@@ -55,3 +55,9 @@ export type BlogPostCard = {
   categories: PostCategoryRef[];
 };
 export type BlogPostList = { items: BlogPostCard[]; total: number; page: number; page_size: number };
+export type BlogCategory = PostCategoryRef & { description: string | null; post_count: number };
+export type BlogRelatedPost = Omit<BlogPostCard, "author_name" | "categories">;
+export type BlogPostDetail = BlogPostCard & {
+  content: string; seo_title: string | null; seo_description: string | null; updated_at: string;
+};
+export type BlogPostData = { post: BlogPostDetail; related: BlogRelatedPost[] };

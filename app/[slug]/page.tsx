@@ -10,7 +10,7 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const page = await getPage(slug);
-  if (!page) return {};
+  if (!page) notFound();
   const title = page.seo_title || page.title;
   const description = page.seo_description ?? undefined;
   const og = safeSrc(page.og_image_url);
