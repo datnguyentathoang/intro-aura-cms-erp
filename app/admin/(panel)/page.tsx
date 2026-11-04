@@ -3,7 +3,6 @@ import { adminJson } from "@/lib/api";
 
 type Stats = {
   features: number;
-  workflows: number;
   screenshots: number;
   faqs: number;
   unread_messages: number;
@@ -12,7 +11,6 @@ type Stats = {
 export default async function AdminHome() {
   const s = (await adminJson<Stats>("/api/admin/stats")) ?? {
     features: 0,
-    workflows: 0,
     screenshots: 0,
     faqs: 0,
     unread_messages: 0,
@@ -20,7 +18,6 @@ export default async function AdminHome() {
 
   const stats = [
     { label: "Tính năng", value: s.features, href: "/admin/features", color: "from-brand-500 to-brand-600", icon: "⭐" },
-    { label: "Luồng nghiệp vụ", value: s.workflows, href: "/admin/workflows", color: "from-sky-500 to-sky-600", icon: "🔀" },
     { label: "Ảnh chụp màn hình", value: s.screenshots, href: "/admin/screenshots", color: "from-emerald-500 to-emerald-600", icon: "📸" },
     { label: "Câu hỏi FAQ", value: s.faqs, href: "/admin/faqs", color: "from-violet-500 to-violet-600", icon: "❓" },
     { label: "Khách hàng mới", value: s.unread_messages, href: "/admin/leads?status=new", color: "from-rose-500 to-red-600", icon: "✉️" },
@@ -33,7 +30,6 @@ export default async function AdminHome() {
     { label: "Cài đặt trợ lý AI", href: "/admin/ai_settings" },
     { label: "Sửa banner đầu trang", href: "/admin/hero" },
     { label: "Thêm tính năng mới", href: "/admin/features" },
-    { label: "Quản lý các bước của luồng", href: "/admin/workflows" },
     { label: "Cập nhật thông tin liên hệ", href: "/admin/contact_info" },
   ];
 
@@ -44,7 +40,7 @@ export default async function AdminHome() {
         <p className="mt-2 text-gray-600">Tổng quan nội dung website giới thiệu.</p>
       </div>
 
-      <div className="grid sm:grid-cols-2 xl:grid-cols-5 gap-4">
+      <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {stats.map((x, i) => (
           <Link
             key={x.label}

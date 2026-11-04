@@ -50,26 +50,6 @@ export const RESOURCES: Record<string, Resource> = {
       ...sortAndPublish,
     ],
   },
-  workflows: {
-    title: 'Luồng nghiệp vụ',
-    api: 'workflows',
-    listField: 'title',
-    fields: [
-      { name: 'title', label: 'Tên luồng', type: 'text', required: true },
-      { name: 'description', label: 'Mô tả', type: 'textarea' },
-      { name: 'image_url', label: 'Ảnh sơ đồ', type: 'image' },
-      ...sortAndPublish,
-    ],
-  },
-  workflow_steps: {
-    title: 'Các bước của luồng',
-    listField: 'title',
-    fields: [
-      { name: 'step_order', label: 'Bước số', type: 'number' },
-      { name: 'title', label: 'Tên bước', type: 'text', required: true },
-      { name: 'description', label: 'Mô tả', type: 'textarea' },
-    ],
-  },
   screenshots: {
     title: 'Ảnh chụp màn hình',
     api: 'screenshots',

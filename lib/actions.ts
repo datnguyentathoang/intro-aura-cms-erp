@@ -5,7 +5,7 @@ import { RESOURCES, type Field } from '@/lib/resources'
 import { adminFetch, adminJson, ensureOk, publicPost } from '@/lib/api'
 import { rethrowRedirect } from '@/lib/upload'
 
-const FOLDERS = ['hero', 'features', 'workflows', 'screenshots', 'team_members', 'testimonials']
+const FOLDERS = ['hero', 'features', 'screenshots', 'team_members', 'testimonials']
 
 export type RecordFormState = { error?: string }
 

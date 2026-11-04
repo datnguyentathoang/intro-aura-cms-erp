@@ -31,7 +31,6 @@ export default async function Home({
   const safeHome = home ?? {
     hero: null,
     features: [],
-    workflows: [],
     screenshots: [],
     faqs: [],
     contact: null,
@@ -39,7 +38,6 @@ export default async function Home({
   const h = safeHome.hero;
   const c = safeHome.contact;
   const featureList = safeHome.features;
-  const workflowList = safeHome.workflows;
   const shotList = safeHome.screenshots;
   const faqList = safeHome.faqs;
 
@@ -154,49 +152,31 @@ export default async function Home({
           </section>
         )}
 
-        {/* LUỒNG NGHIỆP VỤ */}
-        {workflowList.length > 0 && (
-          <section id="workflows" className="bg-slate-50 py-24 px-4">
-            <div className="max-w-5xl mx-auto">
+        {/* ẢNH CHỤP MÀN HÌNH */}
+        {shotList.length > 0 && (
+          <section id="screenshots" className="bg-slate-50 py-24 px-4">
+            <div className="max-w-7xl mx-auto">
               <SectionTitle
-                title="Luồng nghiệp vụ chính"
-                sub="Từng bước rõ ràng, từ mua hàng đến thu tiền."
+                title="Giao diện hệ thống"
+                sub="Hình ảnh thực tế từ phần mềm."
               />
-              <div className="space-y-10">
-                {workflowList.map((w) => (
-                  <Reveal key={w.id}>
-                    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                      <h3 className="text-xl md:text-2xl font-bold text-gray-900">
-                        {w.title}
-                      </h3>
-                      <p className="text-gray-600 mt-2">{w.description}</p>
-                      {w.image_url && (
-                        <div className="mt-5 overflow-hidden rounded-xl border border-gray-200 bg-slate-50">
-                          <img
-                            src={w.image_url}
-                            alt={w.title}
-                            className="mx-auto block w-full max-h-[520px] object-contain"
-                          />
-                        </div>
+              <div className="grid md:grid-cols-2 gap-8">
+                {shotList.map((s, i) => (
+                  <Reveal key={s.id} delay={(i % 2) * 150}>
+                    <figure className="hover-shine group overflow-hidden rounded-2xl border border-gray-200 shadow-md hover:shadow-2xl transition-shadow">
+                      <div className="overflow-hidden">
+                        <img
+                          src={s.image_url}
+                          alt={s.caption ?? ""}
+                          className="w-full group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                      {s.caption && (
+                        <figcaption className="p-4 text-sm text-gray-700 text-center bg-white">
+                          {s.caption}
+                        </figcaption>
                       )}
-                      <ol className="mt-8 ml-4 border-l-2 border-brand-100 space-y-6">
-                        {[...(w.workflow_steps ?? [])]
-                          .sort((a, b) => a.step_order - b.step_order)
-                          .map((s) => (
-                            <li key={s.id} className="relative pl-8">
-                              <span className="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-gradient-to-br from-brand-700 to-accent-700 text-white text-sm font-semibold flex items-center justify-center ring-4 ring-white">
-                                {s.step_order}
-                              </span>
-                              <p className="font-semibold text-gray-900">
-                                {s.title}
-                              </p>
-                              <p className="text-sm text-gray-600 mt-1">
-                                {s.description}
-                              </p>
-                            </li>
-                          ))}
-                      </ol>
-                    </div>
+                    </figure>
                   </Reveal>
                 ))}
               </div>
@@ -204,39 +184,9 @@ export default async function Home({
           </section>
         )}
 
-        {/* ẢNH CHỤP MÀN HÌNH */}
-        {shotList.length > 0 && (
-          <section id="screenshots" className="max-w-7xl mx-auto py-24 px-4">
-            <SectionTitle
-              title="Giao diện hệ thống"
-              sub="Hình ảnh thực tế từ phần mềm."
-            />
-            <div className="grid md:grid-cols-2 gap-8">
-              {shotList.map((s, i) => (
-                <Reveal key={s.id} delay={(i % 2) * 150}>
-                  <figure className="hover-shine group overflow-hidden rounded-2xl border border-gray-200 shadow-md hover:shadow-2xl transition-shadow">
-                    <div className="overflow-hidden">
-                      <img
-                        src={s.image_url}
-                        alt={s.caption ?? ""}
-                        className="w-full group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                    {s.caption && (
-                      <figcaption className="p-4 text-sm text-gray-700 text-center bg-white">
-                        {s.caption}
-                      </figcaption>
-                    )}
-                  </figure>
-                </Reveal>
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* FAQ */}
         {faqList.length > 0 && (
-          <section id="faq" className="bg-slate-50 py-24 px-4">
+          <section id="faq" className="py-24 px-4">
             <div className="max-w-3xl mx-auto">
               <SectionTitle title="Câu hỏi thường gặp" />
               {faqList.map((q, i) => (
@@ -259,91 +209,93 @@ export default async function Home({
         )}
 
         {/* LIÊN HỆ */}
-        <section id="contact" className="max-w-5xl mx-auto py-24 px-4">
-          <SectionTitle
-            title="Liên hệ với chúng tôi"
-            sub="Để lại thông tin, chúng tôi sẽ tư vấn miễn phí."
-          />
-          <div className="grid md:grid-cols-2 gap-10">
-            <Reveal className="space-y-4 text-gray-700">
-              {c?.email && (
-                <p>
-                  <span className="font-semibold">Email:</span> {c.email}
-                </p>
-              )}
-              {c?.phone && (
-                <p>
-                  <span className="font-semibold">Điện thoại:</span> {c.phone}
-                </p>
-              )}
-              {c?.zalo && (
-                <p>
-                  <span className="font-semibold">Zalo:</span> {c.zalo}
-                </p>
-              )}
-              {c?.address && (
-                <p>
-                  <span className="font-semibold">Địa chỉ:</span> {c.address}
-                </p>
-              )}
-              {c?.facebook && (
-                <p>
-                  <a
-                    href={safeHref(c.facebook)}
-                    className="text-brand-700 hover:underline"
-                  >
-                    Facebook
-                  </a>
-                </p>
-              )}
-            </Reveal>
-            <Reveal delay={150}>
-              <form
-                action={submitMessage}
-                className="space-y-3 bg-white border border-gray-100 shadow-lg rounded-2xl p-6"
-              >
-                {sent && (
-                  <p className="text-green-600 font-medium">
-                    Đã gửi, chúng tôi sẽ liên hệ lại sớm!
+        <section id="contact" className="bg-slate-50 py-24 px-4">
+          <div className="max-w-5xl mx-auto">
+            <SectionTitle
+              title="Liên hệ với chúng tôi"
+              sub="Để lại thông tin, chúng tôi sẽ tư vấn miễn phí."
+            />
+            <div className="grid md:grid-cols-2 gap-10">
+              <Reveal className="space-y-4 text-gray-700">
+                {c?.email && (
+                  <p>
+                    <span className="font-semibold">Email:</span> {c.email}
                   </p>
                 )}
-                {error && (
-                  <p className="text-red-600 font-medium">
-                    Gửi không thành công, vui lòng kiểm tra thông tin và thử
-                    lại.
+                {c?.phone && (
+                  <p>
+                    <span className="font-semibold">Điện thoại:</span> {c.phone}
                   </p>
                 )}
-                <label className={labelCls}>
-                  Họ tên
-                  <input
-                    name="name"
-                    autoComplete="name"
-                    required
-                    className={inputCls}
-                  />
-                </label>
-                <label className={labelCls}>
-                  Email
-                  <input
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className={inputCls}
-                  />
-                </label>
-                <label className={labelCls}>
-                  Nội dung
-                  <textarea
-                    name="message"
-                    rows={4}
-                    required
-                    className={inputCls}
-                  />
-                </label>
-                <SubmitButton label="Gửi tin nhắn" pendingLabel="Đang gửi..." block />
-              </form>
-            </Reveal>
+                {c?.zalo && (
+                  <p>
+                    <span className="font-semibold">Zalo:</span> {c.zalo}
+                  </p>
+                )}
+                {c?.address && (
+                  <p>
+                    <span className="font-semibold">Địa chỉ:</span> {c.address}
+                  </p>
+                )}
+                {c?.facebook && (
+                  <p>
+                    <a
+                      href={safeHref(c.facebook)}
+                      className="text-brand-700 hover:underline"
+                    >
+                      Facebook
+                    </a>
+                  </p>
+                )}
+              </Reveal>
+              <Reveal delay={150}>
+                <form
+                  action={submitMessage}
+                  className="space-y-3 bg-white border border-gray-100 shadow-lg rounded-2xl p-6"
+                >
+                  {sent && (
+                    <p className="text-green-600 font-medium">
+                      Đã gửi, chúng tôi sẽ liên hệ lại sớm!
+                    </p>
+                  )}
+                  {error && (
+                    <p className="text-red-600 font-medium">
+                      Gửi không thành công, vui lòng kiểm tra thông tin và thử
+                      lại.
+                    </p>
+                  )}
+                  <label className={labelCls}>
+                    Họ tên
+                    <input
+                      name="name"
+                      autoComplete="name"
+                      required
+                      className={inputCls}
+                    />
+                  </label>
+                  <label className={labelCls}>
+                    Email
+                    <input
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      className={inputCls}
+                    />
+                  </label>
+                  <label className={labelCls}>
+                    Nội dung
+                    <textarea
+                      name="message"
+                      rows={4}
+                      required
+                      className={inputCls}
+                    />
+                  </label>
+                  <SubmitButton label="Gửi tin nhắn" pendingLabel="Đang gửi..." block />
+                </form>
+              </Reveal>
+            </div>
           </div>
         </section>
 

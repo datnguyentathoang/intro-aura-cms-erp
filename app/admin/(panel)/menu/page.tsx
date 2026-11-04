@@ -56,7 +56,7 @@ export default async function MenuAdmin({ searchParams }: { searchParams: Promis
         ))}
         {flat.length === 0 && (
           <div className="text-center text-gray-500 bg-white border border-dashed border-gray-300 rounded-2xl py-12">
-            Chưa có mục menu. Website đang dùng các liên kết mặc định (Tính năng, Quy trình...).
+            Chưa có mục menu. Website đang dùng các liên kết mặc định (Tính năng, Giao diện...).
           </div>
         )}
       </ul>

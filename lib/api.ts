@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { ACCESS_COOKIE } from "@/lib/auth-cookies";
 import type { BlogQuery } from "@/lib/blog";
 import { list } from "@/lib/safe";
-import type { BlogCategory, BlogPostData, BlogPostList, ChatConfig, Contact, Faq, Feature, Hero, Screenshot, Workflow, MenuNode, ProjectData, ProjectListItem, PublicPage, PublicPricingPlan, PublicSection, PublicTeamMember, PublicTestimonial } from "@/lib/types";
+import type { BlogCategory, BlogPostData, BlogPostList, ChatConfig, Contact, Faq, Feature, Hero, Screenshot, MenuNode, ProjectData, ProjectListItem, PublicPage, PublicPricingPlan, PublicSection, PublicTeamMember, PublicTestimonial } from "@/lib/types";
 
 function apiUrl(path: string) {
   const base = process.env.API_BASE_URL;
@@ -15,7 +15,6 @@ function apiUrl(path: string) {
 export type HomeData = {
   hero: Hero | null;
   features: Feature[];
-  workflows: Workflow[];
   screenshots: Screenshot[];
   faqs: Faq[];
   contact: Contact | null;
@@ -24,7 +23,6 @@ export type HomeData = {
 const EMPTY_HOME: HomeData = {
   hero: null,
   features: [],
-  workflows: [],
   screenshots: [],
   faqs: [],
   contact: null,
@@ -38,7 +36,6 @@ export async function getHome(): Promise<HomeData> {
     return {
       hero: data.hero ?? null,
       features: Array.isArray(data.features) ? data.features : [],
-      workflows: Array.isArray(data.workflows) ? data.workflows : [],
       screenshots: Array.isArray(data.screenshots) ? data.screenshots : [],
       faqs: Array.isArray(data.faqs) ? data.faqs : [],
       contact: data.contact ?? null,

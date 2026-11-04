@@ -6,8 +6,6 @@ export type Feature = {
   description: string | null
   image_url: string | null
 }
-export type Step = { id: string; step_order: number; title: string; description: string | null }
-export type Workflow = Feature & { workflow_steps: Step[] }
 export type Screenshot = { id: string; caption: string | null; image_url: string }
 export type Faq = { id: string; question: string; answer: string }
 export type Hero = {

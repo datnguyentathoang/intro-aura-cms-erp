@@ -140,14 +140,6 @@ export default async function ResourcePage({
                 </div>
               </div>
 
-              {resource === "workflows" && (
-                <Link
-                  href={`/admin/workflows/${id}/steps`}
-                  className="px-3 py-1.5 rounded-lg text-sm font-medium text-accent-700 bg-accent-50 hover:bg-accent-100 transition-colors"
-                >
-                  Quản lý bước
-                </Link>
-              )}
               <Link
                 href={`/admin/${resource}/${id}`}
                 className="px-3 py-1.5 rounded-lg text-sm font-medium text-brand-700 bg-brand-50 hover:bg-brand-100 transition-colors"

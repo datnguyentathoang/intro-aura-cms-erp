@@ -19,7 +19,6 @@ const KIND_LABEL: Record<string, string> = {
   pricing: "Gói giá",
   project: "Dự án",
   team: "Đội ngũ",
-  workflow: "Luồng nghiệp vụ",
 };
 
 export default async function AiSettingsPage() {

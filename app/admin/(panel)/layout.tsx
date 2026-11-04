@@ -7,7 +7,6 @@ import Sidebar, { type NavItem } from "@/components/admin/Sidebar";
 const ICONS: Record<string, string> = {
   hero: "🖼️",
   features: "⭐",
-  workflows: "🔀",
   screenshots: "📸",
   faqs: "❓",
   team_members: "👥",
@@ -35,13 +34,11 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     { href: "/admin/projects", label: "Dự án", icon: "💼" },
     { href: "/admin/pages", label: "Trang", icon: "📄" },
     { href: "/admin/menu", label: "Menu website", icon: "🧭" },
-    ...Object.entries(RESOURCES)
-      .filter(([key]) => key !== "workflow_steps")
-      .map(([key, r]) => ({
-        href: `/admin/${key}`,
-        label: r.title,
-        icon: ICONS[key] ?? "📄",
-      })),
+    ...Object.entries(RESOURCES).map(([key, r]) => ({
+      href: `/admin/${key}`,
+      label: r.title,
+      icon: ICONS[key] ?? "📄",
+    })),
     { href: "/admin/leads", label: "Khách hàng tiềm năng", icon: "🎯" },
     { href: "/admin/chats", label: "Hội thoại trợ lý", icon: "🗨️" },
   ];

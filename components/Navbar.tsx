@@ -7,7 +7,6 @@ import type { MenuNode } from "@/lib/types";
 
 const ANCHORS = [
   { id: "features", label: "Tính năng" },
-  { id: "workflows", label: "Quy trình" },
   { id: "screenshots", label: "Giao diện" },
   { id: "faq", label: "FAQ" },
   { id: "contact", label: "Liên hệ" },
@@ -175,11 +174,11 @@ export default function Navbar({ brand = "Aura ERP", logoUrl, marquee, menu = []
           {brand}
         </Anchor>
 
-        <ul className="hidden md:flex items-center gap-1">{items.map((m) => renderDesktop(m, 0))}</ul>
+        <ul className="hidden lg:flex items-center gap-1">{items.map((m) => renderDesktop(m, 0))}</ul>
 
         <Anchor
           href={onHome ? "#contact" : "/#contact"}
-          className="hidden md:inline-block bg-brand-700 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-brand-800 hover:shadow-lg hover:shadow-brand-600/30 transition-all"
+          className="hidden lg:inline-block bg-brand-700 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-brand-800 hover:shadow-lg hover:shadow-brand-600/30 transition-all"
         >
           Liên hệ tư vấn
         </Anchor>
@@ -187,7 +186,7 @@ export default function Navbar({ brand = "Aura ERP", logoUrl, marquee, menu = []
         <button
           ref={toggleRef}
           onClick={() => setOpen(!open)}
-          className={`md:hidden flex w-11 h-11 items-center justify-center rounded-lg transition-colors ${solid ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
+          className={`lg:hidden flex w-11 h-11 items-center justify-center rounded-lg transition-colors ${solid ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
           aria-label={open ? "Đóng menu" : "Mở menu"}
           aria-expanded={open}
           aria-controls="mobile-menu"
@@ -221,11 +220,20 @@ export default function Navbar({ brand = "Aura ERP", logoUrl, marquee, menu = []
       <div
         id="mobile-menu"
         inert={!open}
-        className={`md:hidden overflow-y-auto bg-white shadow-md transition-all duration-300 ${
-          open ? "max-h-[80vh]" : "max-h-0"
+        className={`lg:hidden overflow-y-auto bg-white shadow-md transition-all duration-300 ${
+          open ? "max-h-[calc(100dvh-6rem)]" : "max-h-0"
         }`}
       >
         <ul>{items.map((m) => renderMobile(m, 0))}</ul>
+        <div className="p-4">
+          <Anchor
+            href={onHome ? "#contact" : "/#contact"}
+            onClick={() => setOpen(false)}
+            className="flex min-h-11 items-center justify-center rounded-lg bg-brand-700 px-4 text-sm font-medium text-white hover:bg-brand-800 transition-colors"
+          >
+            Liên hệ tư vấn
+          </Anchor>
+        </div>
       </div>
     </header>
   );
