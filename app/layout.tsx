@@ -1,6 +1,7 @@
 
 import type { Metadata } from 'next'
 import './globals.css'
+import ChatLoader from '@/components/ChatLoader'
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Reveal ẩn nội dung cho tới khi JS chạy; tắt JS vẫn phải đọc được */}
         <noscript><style>{`.reveal { opacity: 1; transform: none; }`}</style></noscript>
         {children}
+        <ChatLoader />
       </body>
     </html>
   )

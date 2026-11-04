@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { ACCESS_COOKIE } from "@/lib/auth-cookies";
 import type { BlogQuery } from "@/lib/blog";
 import { list } from "@/lib/safe";
-import type { BlogCategory, BlogPostData, BlogPostList, Contact, Faq, Feature, Hero, Screenshot, Workflow, MenuNode, ProjectData, ProjectListItem, PublicPage, PublicPricingPlan, PublicSection, PublicTeamMember, PublicTestimonial } from "@/lib/types";
+import type { BlogCategory, BlogPostData, BlogPostList, ChatConfig, Contact, Faq, Feature, Hero, Screenshot, Workflow, MenuNode, ProjectData, ProjectListItem, PublicPage, PublicPricingPlan, PublicSection, PublicTeamMember, PublicTestimonial } from "@/lib/types";
 
 function apiUrl(path: string) {
   const base = process.env.API_BASE_URL;
@@ -281,4 +281,19 @@ export function withSharedLists(sections: PublicSection[]): Promise<PublicSectio
     if (!shared || list(content[shared.field]).length > 0) return sec;
     return { ...sec, content: { ...content, [shared.field]: await shared.load() } };
   }));
+}
+
+// ---------- Trợ lý (công khai) ----------
+// Trang nào cũng cần nên lưu cache 60 giây; đổi cài đặt trong admin thì xoá cache ngay (updateTag).
+// Lỗi hoặc API đang ngủ thì coi như tắt, trang vẫn hiển thị bình thường
+export async function getChatConfig(): Promise<ChatConfig | null> {
+  try {
+    const res = await fetch(apiUrl("/api/public/chat/config"), {
+      next: { revalidate: 60, tags: ["chat-config"] },
+      signal: AbortSignal.timeout(3000),
+    });
+    return res.ok ? ((await res.json()) as ChatConfig) : null;
+  } catch {
+    return null;
+  }
 }

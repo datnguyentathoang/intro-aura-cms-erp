@@ -78,3 +78,5 @@ export type PublicPricingPlan = {
   name: string; price: string | null; period: string | null; description: string | null;
   features: string[]; highlighted: boolean; cta_text: string | null; cta_link: string | null;
 };
+
+export type ChatConfig = { enabled: boolean; bot_name: string; welcome_message: string };
