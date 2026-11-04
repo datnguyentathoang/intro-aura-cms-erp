@@ -1,5 +1,5 @@
 'use server'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { RESOURCES, type Field } from '@/lib/resources'
 import { adminFetch, adminJson, ensureOk, publicPost } from '@/lib/api'
@@ -37,6 +37,7 @@ export async function saveRecord(
     return { error: e instanceof Error ? e.message : 'Không lưu được dữ liệu' }
   }
 
+  if (table === 'ai_settings') updateTag('chat-config')
   revalidatePath('/')
   revalidatePath(`/admin/${table}`)
   redirect(`/admin/${table}`)
@@ -109,18 +110,6 @@ export async function moveRecord(table: string, id: string, direction: 'up' | 'd
   )
   revalidatePath('/')
   revalidatePath(`/admin/${table}`)
-}
-
-export async function toggleHandled(id: string, value: boolean) {
-  await ensureOk(await adminFetch(`/api/admin/messages/${id}/handled?value=${value}`, { method: 'PUT' }))
-  revalidatePath('/admin/messages')
-  revalidatePath('/admin')
-}
-
-export async function deleteMessage(id: string) {
-  await ensureOk(await adminFetch(`/api/admin/messages/${id}`, { method: 'DELETE' }))
-  revalidatePath('/admin/messages')
-  revalidatePath('/admin')
 }
 
 // Khách gửi form liên hệ (không cần đăng nhập)

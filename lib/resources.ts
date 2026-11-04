@@ -136,6 +136,32 @@ export const RESOURCES: Record<string, Resource> = {
       ...sortAndPublish,
     ],
   },
+  knowledge_documents: {
+    title: 'Kiến thức trợ lý',
+    api: 'knowledge-documents',
+    listField: 'title',
+    listSubField: 'content',
+    hint: 'Thông tin bổ sung cho trợ lý, ngoài nội dung đã xuất bản trên website. Khách có thể đọc được qua câu trả lời, nên chỉ nhập thông tin được phép công khai.',
+    fields: [
+      { name: 'title', label: 'Tiêu đề', type: 'text', required: true, maxLength: 200 },
+      { name: 'content', label: 'Nội dung', type: 'textarea', required: true, maxLength: 8000, help: 'Viết thành câu rõ ràng, tối đa 8000 ký tự.' },
+      { name: 'url', label: 'Đường dẫn để khách đọc thêm', type: 'text', maxLength: 500, help: 'Đường dẫn nội bộ (/pricing) hoặc https://… có thể để trống.' },
+      ...sortAndPublish,
+    ],
+  },
+  ai_settings: {
+    title: 'Trợ lý AI',
+    api: 'ai/settings',
+    single: true,
+    fields: [
+      { name: 'is_enabled', label: 'Bật trợ lý trên website', type: 'checkbox', defaultOff: true },
+      { name: 'bot_name', label: 'Tên trợ lý', type: 'text', required: true, maxLength: 60 },
+      { name: 'welcome_message', label: 'Lời chào', type: 'textarea', required: true, maxLength: 500 },
+      { name: 'fallback_message', label: 'Câu trả lời khi không có thông tin', type: 'textarea', required: true, maxLength: 500, help: 'Sau câu này khách sẽ thấy nút để lại thông tin.' },
+      { name: 'daily_message_limit', label: 'Số câu trả lời tối đa mỗi ngày', type: 'number', help: 'Vượt giới hạn thì trợ lý chỉ mời để lại thông tin, không gọi AI. Dùng để kiểm soát chi phí.' },
+      { name: 'session_message_limit', label: 'Số câu hỏi tối đa mỗi cuộc trò chuyện', type: 'number' },
+    ],
+  },
   contact_info: {
     title: 'Thông tin liên hệ',
     api: 'contact-info',

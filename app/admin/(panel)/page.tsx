@@ -23,12 +23,14 @@ export default async function AdminHome() {
     { label: "Luồng nghiệp vụ", value: s.workflows, href: "/admin/workflows", color: "from-sky-500 to-sky-600", icon: "🔀" },
     { label: "Ảnh chụp màn hình", value: s.screenshots, href: "/admin/screenshots", color: "from-emerald-500 to-emerald-600", icon: "📸" },
     { label: "Câu hỏi FAQ", value: s.faqs, href: "/admin/faqs", color: "from-violet-500 to-violet-600", icon: "❓" },
-    { label: "Tin nhắn chưa xử lý", value: s.unread_messages, href: "/admin/messages", color: "from-rose-500 to-red-600", icon: "✉️" },
+    { label: "Khách hàng mới", value: s.unread_messages, href: "/admin/leads?status=new", color: "from-rose-500 to-red-600", icon: "✉️" },
   ];
 
   const quick = [
     { label: "Viết bài mới", href: "/admin/posts/new" },
     { label: "Thêm dự án mới", href: "/admin/projects/new" },
+    { label: "Xem khách hàng tiềm năng", href: "/admin/leads" },
+    { label: "Cài đặt trợ lý AI", href: "/admin/ai_settings" },
     { label: "Sửa banner đầu trang", href: "/admin/hero" },
     { label: "Thêm tính năng mới", href: "/admin/features" },
     { label: "Quản lý các bước của luồng", href: "/admin/workflows" },

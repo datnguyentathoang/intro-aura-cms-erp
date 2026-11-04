@@ -13,6 +13,8 @@ const ICONS: Record<string, string> = {
   team_members: "👥",
   testimonials: "💬",
   pricing_plans: "💰",
+  knowledge_documents: "📚",
+  ai_settings: "🤖",
   contact_info: "📞",
 };
 
@@ -40,7 +42,8 @@ export default async function PanelLayout({ children }: { children: React.ReactN
         label: r.title,
         icon: ICONS[key] ?? "📄",
       })),
-    { href: "/admin/messages", label: "Tin nhắn khách gửi", icon: "✉️" },
+    { href: "/admin/leads", label: "Khách hàng tiềm năng", icon: "🎯" },
+    { href: "/admin/chats", label: "Hội thoại trợ lý", icon: "🗨️" },
   ];
 
   return (
